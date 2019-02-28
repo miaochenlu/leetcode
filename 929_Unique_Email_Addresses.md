@@ -71,3 +71,11 @@ int numUniqueEmails(char** emails, int emailsSize) {
 }
 ```
 
+思路：
+* 对给定的字符串，得到一个处理过'@','+'的字符串email
+    * 处理'@'前
+    * 处理'@'后
+* 比较email和之前得到的那些字符串
+    * 有相同 break
+    * 不相同 拷贝进新字符串组，res+1
+
