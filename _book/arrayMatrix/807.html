@@ -1,0 +1,376 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>807.Max Increase to Keep City Skyline · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" >
+            
+                <span>
+            
+                    
+                    [字符串][string]
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" >
+            
+                <span>
+            
+                    
+                    [1108. Defanging an IP Address][string/1108.md]
+            
+                </span>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" >
+            
+                <span>
+            
+                    
+                    [数组和矩阵][arrayMatrix]
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter active" data-level="1.3.1" data-path="807.html">
+            
+                <a href="807.html">
+            
+                    
+                    807.Max Increase to Keep City Skyline
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" >
+            
+                <span>
+            
+                    
+                    [树][tree]
+            
+                </span>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >807.Max Increase to Keep City Skyline</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="807-max-increase-to-keep-city-skyline">807. Max Increase to Keep City Skyline</h1>
+<p>Medium</p>
+<p>In a 2 dimensional array <code>grid</code>, each value <code>grid[i][j]</code> represents the height of a building located there. We are allowed to increase the height of any number of buildings, by any amount (the amounts can be different for different buildings). Height 0 is considered to be a building as well. </p>
+<p>At the end, the &quot;skyline&quot; when viewed from all four directions of the grid, i.e. top, bottom, left, and right, must be the same as the skyline of the original grid. A city&apos;s skyline is the outer contour of the rectangles formed by all the buildings when viewed from a distance. See the following example.</p>
+<p>What is the maximum total sum that the height of the buildings can be increased?</p>
+<pre><code>Example:
+Input: grid = [[3,0,8,4],[2,4,5,7],[9,2,6,3],[0,3,1,0]]
+Output: 35
+Explanation: 
+The grid is:
+[ [3, 0, 8, 4], 
+  [2, 4, 5, 7],
+  [9, 2, 6, 3],
+  [0, 3, 1, 0] ]
+
+The skyline viewed from top or bottom is: [9, 4, 8, 7]
+The skyline viewed from left or right is: [8, 7, 9, 3]
+
+The grid after increasing the height of buildings without affecting skylines is:
+
+gridNew = [ [8, 4, 8, 7],
+            [7, 4, 7, 7],
+            [9, 4, 8, 7],
+            [3, 3, 3, 3] ]
+</code></pre><p><strong>Notes:</strong> </p>
+<ul>
+<li><code>1 &lt; grid.length = grid[0].length &lt;= 50</code>.</li>
+<li>All heights <code>grid[i][j]</code> are in the range <code>[0, 100]</code>.</li>
+<li>All buildings in <code>grid[i][j]</code> occupy the entire grid cell: that is, they are a <code>1 x 1 x grid[i][j]</code> rectangular prism.</li>
+</ul>
+<h1 id="version-1">Version 1</h1>
+<p>&#x9898;&#x76EE;&#x7684;&#x610F;&#x601D;&#x5C31;&#x662F;&#x6BCF;&#x4E2A;&#x4F4D;&#x7F6E;&#x6240;&#x53D6;&#x7684;&#x503C;&#x4E0D;&#x80FD;&#x6BD4;&#x4ED6;&#x6240;&#x5904;&#x884C;&#x5217;&#x7684;&#x6700;&#x5927;&#x503C;&#x5927;&#x3002;</p>
+<p>&#x5F88;&#x66B4;&#x529B;&#x7684;&#x505A;&#x6CD5;</p>
+<p>maxiarray&#x5B58;&#x50A8;&#x6BCF;&#x4E00;&#x884C;&#x7684;&#x6700;&#x5927;&#x503C;</p>
+<p>maxjarray&#x5B58;&#x50A8;&#x6BCF;&#x4E00;&#x5217;&#x7684;&#x6700;&#x5927;&#x503C;</p>
+<p>maxMatrix&#x5B58;&#x50A8;&#x6BCF;&#x4E00;&#x4E2A;&#x4F4D;&#x7F6E;&#x80FD;&#x591F;&#x53D6;&#x7684;&#x6700;&#x5927;&#x503C;</p>
+<p>maxMatrix-grid&#x5C31;&#x662F;&#x7ED3;&#x6784;&#x4E86;</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">class</span> Solution {
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">maxIncreaseKeepingSkyline</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; grid)</span> </span>{
+        <span class="hljs-keyword">int</span> maxi = grid.size();
+        <span class="hljs-keyword">int</span> maxj = grid[<span class="hljs-number">0</span>].size();
+        <span class="hljs-keyword">int</span> maxMatrix[maxi][maxj] = {<span class="hljs-number">0</span>};
+
+        <span class="hljs-keyword">int</span> maxiarray[maxi] = {<span class="hljs-number">0</span>};
+        <span class="hljs-keyword">int</span> maxjarray[maxj] = {<span class="hljs-number">0</span>};
+
+          <span class="hljs-comment">//&#x6C42;&#x51FA;&#x6BCF;&#x4E00;&#x884C;&#x7684;&#x6700;&#x5927;&#x503C;&#xFF0C;&#x5B58;&#x5230;maxiarray</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; maxi; i++) {
+            <span class="hljs-keyword">int</span> max = <span class="hljs-number">-0xffff</span>;
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; maxj; j++) {
+                <span class="hljs-keyword">if</span>(grid[i][j] &gt; max) 
+                    max = grid[i][j];
+            }
+            maxiarray[i] = max;
+        }
+        <span class="hljs-comment">//&#x6C42;&#x51FA;&#x6BCF;&#x4E00;&#x5217;&#x6700;&#x5927;&#x503C;&#xFF0C;&#x5B58;&#x5230;maxjarray</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; maxj; j++) {
+            <span class="hljs-keyword">int</span> max = <span class="hljs-number">-0xffff</span>;
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; maxi; i++ ) {
+                <span class="hljs-keyword">if</span>(grid[i][j] &gt; max)
+                    max = grid[i][j];
+            }
+            maxjarray[j] = max;
+        }
+        <span class="hljs-comment">//&#x6C42;&#x51FA;&#x6BCF;&#x4E2A;&#x4F4D;&#x7F6E;&#x53EF;&#x4EE5;&#x5B58;&#x653E;&#x7684;&#x6700;&#x5927;&#x503C;&#xFF0C;&#x5B58;&#x5230;maxMatrix</span>
+        <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; maxi; i++) {
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; maxj; j++) {
+                maxMatrix[i][j] = min(maxiarray[i], maxjarray[j]);
+                res += maxMatrix[i][j] - grid[i][j];
+            }
+        }
+
+      <span class="hljs-keyword">return</span>  res;
+    }
+};
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"807.Max Increase to Keep City Skyline","level":"1.3.1","depth":2,"next":{"title":"[树][tree]","level":"1.4","depth":1,"ref":"","articles":[]},"previous":{"title":"[数组和矩阵][arrayMatrix]","level":"1.3","depth":1,"ref":"","articles":[{"title":"807.Max Increase to Keep City Skyline","level":"1.3.1","depth":2,"path":"arrayMatrix/807.md","ref":"arrayMatrix/807.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"arrayMatrix/807.md","mtime":"2019-09-27T12:55:37.098Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-09-27T13:14:25.574Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
