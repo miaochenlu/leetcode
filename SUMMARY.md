@@ -25,6 +25,7 @@
     * [654. Maximum Binary Tree](tree/*654.md)
     * [701. Insert into a Binary Search Tree](tree/701.md)
     * [938.Range Sum of BST](tree/938.md)
+    * [814. Binary Tree Pruning](tree/814.md)
 
 * [DFS][DFS]
 
