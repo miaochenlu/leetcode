@@ -16,6 +16,8 @@
     * [807.Max Increase to Keep City Skyline](arrayMatrix/807.md)
     * [ *42.Trapping Rain Water[H]](arrayMatrix/*42.md)
     * [* 50. Reveal Cards In Increasing Order](array/Matrix/*950.md)
+    * [*763. Partition Labels](arrayMatrix/*763.md)
+    * [1021. Remove Outermost Parentheses](arrayMatrix/1021.md)
     
 * [树][tree]
 
