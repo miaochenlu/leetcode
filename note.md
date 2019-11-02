@@ -242,3 +242,106 @@ int main() {
 
 
 
+# 5. 二分
+
+```cpp
+int binarySearch(int A[], int left, int right, int x) {
+  int mid;
+  while(left <= right) {	//如果left>right没法形成区间
+    mid = (left + right) / 2;
+    if(A[mid] == x) return mid;
+    else if(A[mid] < x) {
+      right = mid - 1;	// [left, mid - 1]
+		} else {
+      left = mid + 1;		// [mid + 1, right]
+    }
+  }
+  return -1;
+}
+```
+
+有一些要注意的地方
+
+`mid = (left + right) / 2`中的`left + right`可能会超过int而溢出，可以使用`mid = left + (right - left) / 2`来代替
+
+
+
+接下来我们会解决的问题是： 求出序列中第一个$\geq x$的元素的位置L以及第一个大于x的元素的位置R，这样x在序列中的存在区间就是[L, R)
+
+先找第一个>=x的元素的位置
+
+```cpp
+int lower_bound(int A[], int left, int right, int x) {
+  int mid;
+  while(left < right) { 			//注意这里没有=
+    mid = (left + right) / 2;
+    if(A[mid] >= x) {
+      right = mid;
+    } else {
+      left = mid + 1;
+    }
+  }
+  return left;
+}
+```
+
+再找出序列中第一个大于x的元素的位置
+
+```cpp
+int upper_bound(int A[], int left, int right, int x) {
+  int mid;
+  while(left < right) {
+    mid = (left + right) / 2;
+    if(A[mid] > x) {
+      right = mid;
+    } else {//A[mid] <= x
+      left = mid + 1;
+    }
+  }
+  return left;
+}
+```
+
+
+
+
+
+寻找有序序列中第一个满足某条件的元素的位置的模板
+
+左闭右闭区间[left, right]
+
+```cpp
+int solve(int left, int right) {
+  int mid;
+  while(left < right) {
+    mid = (left + right) / 2;
+    if(条件成立) {//条件成立，第一个满足条件的位置<=mid
+      right = mid;		//查找[left, mid]
+    } else {//条件不成立，第一个满足条件的位置>mid
+      left = mid + 1;	//查找[mid + 1, right]
+    }
+  }
+  return left
+}
+```
+
+左开右闭区间(left, right]
+
+```cpp
+int solve(int left, int right) {
+  int mid;
+  while(left + 1 < right) {
+    if(条件成立) {
+      right = mid;
+    } else {
+      left = mid;
+    }
+  }
+  return right;
+}
+```
+
+例题：
+
+[744. Find Smallest Letter Greater Than Target](greedy/744.md)
+
