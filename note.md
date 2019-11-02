@@ -345,3 +345,142 @@ int solve(int left, int right) {
 
 [744. Find Smallest Letter Greater Than Target](greedy/744.md)
 
+#### 二分应用：快速幂
+
+问题1
+
+给定三个正整数$a,b,m(a<10^9, b < 10^6, 1 < m < 10^9)$, 求$a^b\%m$
+
+```cpp
+typedef long long LL;
+LLpow(LL a, LL b, LL m) {
+  LL ans = 1;
+  for(int i = 1; i < b; i++) {
+    ans = ans * a % m;
+  }
+  return ans;
+}
+```
+
+使用Long long 是为了防止int相乘后溢出
+
+
+
+问题2
+
+给定三个正整数$a,b,m(a<10^9, b < 10^{18}, 1 < m < 10^9)$, 求$a^b\%m$
+
+$b^{18}$的复杂度属实有点高
+
+因此采用二分的思想
+
+* 如果b是奇数, $a^b=a*a^{b-1}$
+
+* 如果b是偶数, $a^b=a^{b/2}*a^{b/2}$
+
+递归代码
+
+```cpp
+typedef long long LL;
+LL binaryPow(LL a, LL b, LL m) {
+  if(b == 0) return 1;
+  if(b % 2 == 1)
+    return a * binaryPow(a, b - 1, m) % m;
+  else {
+    LL mul = binaryPow(a, b / 2, m);
+    return mul * mul % m;
+  }
+}
+```
+
+注意点：
+
+* 如果初始a >= m, 先让a对m取模
+* 如果m=1, 直接在函数外特判为0
+
+* 可以用`if(b & 1)`来代替`if(b % 2 == 1)`
+
+
+
+迭代写法
+
+将b用二进制表示则为
+
+$b=2^k+2^m+\cdots$
+
+$a^b=a^{2^k}*a^{2^m}*\cdots$
+
+```cpp
+typedef long long LL;
+LL binaryPow(LL a, LL b, LL m) {
+  LL ans = 1;
+  while(b > 0) {
+    if(b & 1) {
+      ans = ans * a % m;
+    }
+    a = a * a % m;
+    b >> 1;
+  }
+  return ans;
+}
+```
+
+
+
+
+
+# 6. two pointers
+
+问题：
+
+给定一个递增的正整数序列和一个正整数M, 求序列中的两个不同位置的数a和b,使得他们的和恰好为M
+
+暴力
+
+```cpp
+for(int i = 0; i < n; i++) {
+  for(int j = i + 1; j < n; j++) {
+    if(a[i] + a[j] == M) {
+      printf("%d %d\n", a[i], a[j]);
+    }
+  }
+}
+```
+
+复杂度是$O(n^2)$
+
+用two pointers的做法$O(n)$
+
+```cpp
+while(i < j) {
+  if(a[i] + a[j] == m) {
+    printf("%d %d\n", i, j);
+    i++;
+    j--;
+  } else if(a[i] + a[j] < m) {
+    i++;
+  } else {
+    j--;
+  }
+}
+```
+
+
+
+再来看序列合并问题
+
+```cpp
+int merge(int A[], int B[], int C[], int n, int m) {
+  int i = 0; int j = 0; int index = 0;
+  while(i < n && j < m) {
+    if(A[i] < B[j]) C[index++] = A[i++];
+    else C[index++] = B[j++];
+  }
+  while(i < n) C[index++] = A[i++];
+  while(j < m) C[index++] = B[j++];
+  return index;
+}
+```
+
+
+
