@@ -32,4 +32,6 @@
     * [*1079. Letter Tile Possibilities](DFS/*1079.md)
     
 
-
+* [Greedy][greedy]
+  * [744. Find Smallest Letter Greater Than Target](greedy/744.md)
+  * 
