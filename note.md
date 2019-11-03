@@ -427,6 +427,14 @@ LL binaryPow(LL a, LL b, LL m) {
 
 
 
+```cpp
+typedef long long LL;
+LL binaryPow(LL a, LL b, LL m) {
+  LL res = 1;
+  
+}
+```
+
 
 
 # 6. two pointers
@@ -483,4 +491,86 @@ int merge(int A[], int B[], int C[], int n, int m) {
 ```
 
 
+
+
+
+# 7. 其他高效的算法技巧
+
+## 7.1 打表
+
+1. 在程序中一次性计算出所有需要用到的结果，之后的查询直接取这些结果
+2. 在程序B中分一次或多次计算出所有需要哟哦你感到的结果，手工把结果写在程序A的数组中，然后在程序A中就可以直接使用这些结果
+3. 对于感觉不会做的题目，先用暴力程序计算小范围的数据，然后找规律
+
+
+
+## 7.2 活用递推
+
+例： 比如一类设计序列的题目，加入序列的每一位所需要计算的值都可以通过该位左右两侧的结果计算得到，那么就可以考虑所谓的“左右两侧的结果”是否能通过递推进行预处理来得到。这样在后面的使用中就可以不必反复求解
+
+
+
+字符串 `APPAPT` 中包含了两个单词 `PAT`，其中第一个 `PAT` 是第 2 位(`P`)，第 4 位(`A`)，第 6 位(`T`)；第二个 `PAT` 是第 3 位(`P`)，第 4 位(`A`)，第 6 位(`T`)。
+
+现给定字符串，问一共可以形成多少个 `PAT`？
+
+#### 输入格式：
+
+输入只有一行，包含一个字符串，长度不超过105，只包含 `P`、`A`、`T` 三种字母。
+
+#### 输出格式：
+
+在一行中输出给定字符串中包含多少个 `PAT`。由于结果可能比较大，只输出对 1000000007 取余数的结果。
+
+#### 输入样例：
+
+```in
+APPAPT
+```
+
+#### 输出样例：
+
+```out
+2
+```
+
+这题的思想就是:PAT字符串的个数等于
+
+`A左边P的个数*A右边T的个数`
+
+```cpp
+#include<iostream>
+#include<algorithm>
+#include<string>
+using namespace std;
+int Ts[100010];
+int main() {
+    string str;
+    cin >> str;
+    int res = 0;
+    int mod = 1000000007;
+    int Tnum = 0;
+  	//求出每个位置(包括该位置)右边T的个数
+    for(int i = str.size() - 1; i >= 0; i--) {
+        if(str[i] == 'T') {
+            Tnum++;
+        }
+        Ts[i] = Tnum;
+    }
+    int Pnum = 0;
+    for(int i = 0; i < str.size(); i++) {
+        if(str[i] == 'P') {
+            Pnum++;
+        } else if(str[i] == 'A') {
+            res = (res + Ts[i] * Pnum) % mod;
+        }
+
+    }
+    cout << res << endl;
+} 
+```
+
+
+
+## 7.3 随机选择算法
 
