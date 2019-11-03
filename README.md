@@ -30,3 +30,7 @@
 * Twopointers
     * [344. Reverse String](Twopointers/344.md)
     * [986. Interval List Intersections](Twopointers/986.md)
+    * [349. Intersection of Two Arrays](Twopointers/349.md)
+    * [*1004. Max Consecutive Ones III](Twopointers/*1004.md)
+* 打表
+    * [12.Integer to Roman](打表/12.md)
