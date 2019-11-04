@@ -574,3 +574,40 @@ int main() {
 
 ## 7.3 随机选择算法
 
+问题：如何从一个无序数组中求出第k大的数
+
+直观的：对数组排序，然后取出第K个
+
+但是这种直观的方法复杂度是$O(nlogn)$的
+
+下面的随机选择算法，对任意输入都可以达到O(n)对期望时间复杂度
+
+```cpp
+void randSelect(int A[], int left, int right, int K) {
+  if(left == right) return;
+  int p = randPartition(A, left, right);
+  int M = p - left + 1;//A[p]是A[left, right]中的第M大
+  if(K == M) return;	 //找到第K大的数了！
+  if(K < M) {					 //第K大的数在主元左侧
+    randSelect(A, left, p - 1, K);
+  } else {						 //第K大的数在主元右侧
+    randSelect(A, p + 1, right, K - M);
+  }
+}
+
+int randPartition(int A[], int left, int right) {
+  int p = (round(1.0 * rand() / RAND_MAX * (right - left)) + left);
+  swap(A[p], A[left]);
+  
+  int temp = A[left];
+  while(left < right) {
+    while(left < right && A[right] > temp) right--;
+    A[left] = A[right];
+    while(left < right && A[left] <= temp) left++;
+    A[right] = A[left];
+  }
+  A[left] = temp;
+  return left;
+}
+```
+
