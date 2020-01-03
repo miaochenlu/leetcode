@@ -6,16 +6,15 @@
 * [map](map.md)
     * [单调栈](method/monotoneStack.md)
 * 字符串
-  
     * [1108. Defanging an IP Address](string/1108.md)
     * [804. Unique Morse Code Words](string/804.md)
     * [929. Unique Email Addresses](string/929.md)
 * 数组和矩阵
-  * [807.Max Increase to Keep City Skyline](arrayMatrix/807.md)
-    * [ *42.Trapping Rain Water[H]](arrayMatrix/*42.md)
-    * [* 50. Reveal Cards In Increasing Order](arrayMatrix/*50.md)
-    * [*763. Partition Labels](arrayMatrix/*763.md)
-    * [1021. Remove Outermost Parentheses](arrayMatrix/1021.md)
+   * [807.Max Increase to Keep City Skyline](arrayMatrix/807.md)
+   * [ *42.Trapping Rain Water[H]](arrayMatrix/*42.md)
+   * [* 50. Reveal Cards In Increasing Order](arrayMatrix/*50.md)
+   * [*763. Partition Labels](arrayMatrix/*763.md)
+   * [1021. Remove Outermost Parentheses](arrayMatrix/1021.md)
 * 树
 
     * [*1038.Binary search Tree to Greater Sum Tree](tree/*1038.md)
@@ -25,9 +24,9 @@
     * [814. Binary Tree Pruning](tree/814.md)
     * [1008. Construct Binary Search Tree from Preorder Traversal](tree/1008.md)
 * DFS
-* [*1079. Letter Tile Possibilities](DFS/*1079.md)
+    * [*1079. Letter Tile Possibilities](DFS/*1079.md)
 * Greedy
-  * [1221. Split a String in Balanced Strings](greedy/1221.md)
+    * [1221. Split a String in Balanced Strings](greedy/1221.md)
 * BinarySearch
     * [852. Peak Index in a Mountain Array](BinarySearch/852.md)
     * [744. Find Smallest Letter Greater Than Target](BinarySearch/744.md)
