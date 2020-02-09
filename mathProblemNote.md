@@ -158,6 +158,343 @@ a,b的最小公倍数=a*b/gcd(a,b)
 
 
 
+# 3. 分数的四则运算
+
+## 3.1 分数的表示和化简
+
+### 表示
+
+```cpp
+struct Fraction {
+  int up, down;
+}
+```
+
+### 化简
+
+```cpp
+Fraction reduction(Fraction result) {
+  if(result.down < 0) {
+    result.up = -result.up;
+    result.down = -result.down;
+  }
+  if(result.up == 0) {
+    result.down = 1;
+  } else {
+    int d = gcd(abs(result.up), abs(result.down));
+    result.up /= d;
+    result.down /= d;
+  }
+  return result;
+}
+```
+
+
+
+## 3.2 分数的四则运算
+
+```cpp
+Fraction add(Fraction f1, Fraction f2){
+  Fraction result;
+  result.up = f1.up * f2.down + f2.up * f1.down;
+  result.down = f1.down * f2.down;
+  return reduction(result);
+}
+```
+
+
+
+```cpp
+Fraction minu(Fraction f1, Fraction f2){
+  Fraction result;
+  result.up = f1.up * f2.down - f1.down * f2.up;
+  result.down = f1.down * f2.down;
+  return reduction(result);
+}
+```
+
+
+
+```cpp
+Fraction multi(Fraction f1, Fraction f2) {
+  Fraction result;
+  result.up = f1.up * f2.up;
+  result.down = f1.down * f2.down;
+  return reduction(result);
+}
+```
+
+
+
+```cpp
+Fraction divide(Fraction f1, Fraction f2) {
+  Fraction result;
+  result.up = f1.up * f2.down;
+  result.down = f1.down * f2.up;
+  return reduction(result);
+}
+```
+
+
+
+练习题
+
+### Problem A: 分数矩阵
+
+#### Description	
+
+我们定义如下矩阵：
+
+```
+1/1 1/2 1/3
+1/2 1/1 1/2
+1/3 1/2 1/1
+```
+
+矩阵对角线上的元素始终是1/1，对角线两边分数的分母逐个递增。
+请求出这个矩阵的总和。
+
+#### Input	
+
+输入包含多组测试数据。每行给定整数N（N<50000），表示矩阵为N*N。当N=0时，输入结束。	
+
+#### Output	
+
+输出答案，结果保留2位小数。	
+
+#### Sample Input
+
+```
+1
+2
+3
+4
+0
+```
+
+#### Sample Output
+
+```
+1.00
+3.00
+5.67
+8.83
+```
+
+solution:
+
+思路是
+
+右上角矩阵和左下角矩阵的和是一样的，然后再加上对角线上的数
+
+```cpp
+#include<iostream>
+#include<cstdio>
+using namespace std;
+
+int main() {
+    int n;
+    double result = 0;
+
+    cin >> n;
+    while(n) {
+        double tmp = 0;
+        result = 0;
+        for(int i = 1; i < n; i++) {
+            tmp = tmp + 1.0 / (i + 1);
+            result += tmp;
+        }
+        result = result * 2 + n;
+        printf("%.2f\n", result);
+        cin >> n;
+    }
+}
+```
+
+
+
+# 4. 素数
+
+## 4.1 素数的判断
+
+```cpp
+bool isPrime(int n) {
+	if(n <= 1) return false;
+  int sqr = (int)sqrt(1.0 * n);
+  for(int i = 2; i <= sqr; i++) {
+    if(n % i == 0) return false;
+  }
+  return true;
+}
+```
+
+有更简单的写法
+
+```cpp
+bool isPrime(int n) {
+  if(n <= 1) return false;
+  for(long long i = 2; i * i <= n; i++) { //long long避溢出
+    if(n % i == 0) return false;
+  }
+  return true;
+}
+```
+
+
+
+## 4.2 素数表的获取
+
+  素数筛, 复杂度$O(nloglogn)$
+
+```cpp
+#include<cstdio>
+const int maxn = 101;
+int prime[maxn], pNum = 0;//prime数组放所有素数，pNum为素数个数
+bool p[maxn] = {0};
+void Find_Prime() {
+  for(int i = 2; i < maxn; i++) {
+    if(p[i] == false) {
+      prime[pNum++] = i;
+      //把素数的倍数全部删掉
+      for(int j = i + i; j < maxn; j += i) {
+        p[j] = true;
+      }
+    }
+  }
+}
+int main() {
+  Find_Prime();
+  for(int i = 0; i < pNum; i++) {
+    printf("%d ", prime[i]);
+  }
+  return 0;
+}
+```
+
+
+
+# 5. 质因子分解
+
+### PAT 1059 Prime Factors (25分)
+
+Given any positive integer *N*, you are supposed to find all of its prime factors, and write them in the format $N = p_1^{k_1}\times p_2^{k_2}\times\cdots\times p_m^{k_m}$
+
+### Input Specification:
+
+Each input file contains one test case which gives a positive integer *N* in the range of **long int**.
+
+### Output Specification:
+
+Factor *N* in the format *N* `=` *p*1`^`*k*1`*`*p*2`^`*k*2`*`…`*`*pm*`^`*km*, where *pi*'s are prime factors of *N* in increasing order, and the exponent *ki* is the number of *pi* -- hence when there is only one *pi*, *ki* is 1 and must **NOT** be printed out.
+
+### Sample Input:
+
+```in
+97532468
+```
+
+### Sample Output:
+
+```out
+97532468=2^2*11*17*101*1291
+```
+
+
+
+```cpp
+#include<cstdio>
+#include<iostream>
+#include<cmath>
+using namespace std;
+struct factor {
+    int x, cnt;
+} fac[1000];
+
+const int maxn = 100000;
+int prime[maxn];
+int pNum;
+int flag[maxn];
+
+void Find_Prime(int n) {
+    for(int i = 2; i < n; i++) {
+        if(flag[i] == 0) {
+            prime[pNum++] = i;
+            for(int j = i + i; j < n; j += i) {
+                flag[j] = 1;
+            }
+        }
+    }
+}
+int main() {
+    long n;
+    cin >> n;
+		cout << n << "=";
+    if(n == 1) {
+        cout << 1;
+        return 0;
+    }
+    Find_Prime(sqrt(1.0 * n));
+    int num = 0;
+    for(int i = 0; i < pNum; i++) {
+        if(n % prime[i] == 0) {
+            fac[num].x = prime[i];
+            fac[num].cnt = 0;
+            while(n % prime[i] == 0) {
+                fac[num].cnt++;
+                n /= prime[i];
+            }
+            num++;
+        }
+    }
+    if(n != 1) {
+        fac[num].x = n;
+        fac[num++].cnt = 1;
+    }
+
+    for(int i = 0; i < num - 1; i++) {
+        cout << fac[i].x;
+        if(fac[i].cnt != 1) cout << "^" << fac[i].cnt;
+        cout << "*";
+    }
+    cout << fac[num - 1].x;
+    if(fac[num - 1].cnt != 1) cout << "^" << fac[num - 1].cnt;    
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
