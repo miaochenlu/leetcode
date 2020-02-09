@@ -154,3 +154,268 @@ int main() {
 }
 ```
 
+
+
+# 4. map的常用用法详解
+
+```cpp
+map<typename1, typename2> mp;
+```
+
+
+
+map的访问
+
+```cpp
+map<char, int> mp;
+//通过下标访问
+mp['m'] = 20;
+mp['r'] = 30;
+//通过迭代器访问
+for(map<char, int>::iterator it = mp.begin();  it != mp.end(); it++) {
+  printf("%c %d\n", it->first, it->second);
+}
+```
+
+
+
+* `find(key)`： 返回键为key的映射的迭代器，复杂度为O(logN)
+* `erase()`
+  * `erase(it)`:
+  * `erase(key)`
+  * `erase(first, last)`
+
+* `size()`
+* `clear()`
+
+
+
+# 5. queue的常见用法详解
+
+```cpp
+queue<typename> name;
+```
+
+* `front()`: 访问队首元素
+* `back()`: 队尾元素
+* `pop()`: 令队首元素出队
+* `empty()`： 检测queue是否为空
+* `size()`： queue内元素个数
+
+
+
+当需要实现广度优先搜索时，可以使用queue。
+
+在使用`front()`和`pop()`函数之前，必须用`empty()`函数判断队列是否为空
+
+
+
+# 6. priority queue的常见用法详解
+
+底层通过堆来实现。在优先队列中国呢，队首元素时当前队列中优先级最高的那一个
+
+* `push(x)`:将x入队
+* `top()`： 访问队首元素
+* `pop()`： 令队首元素出队
+* `empty()`: 检测优先队列是否为空
+* `size()`
+
+
+
+## 6.1 优先级的设置
+
+### A. 基本数据类型的优先级设置:int, char, double
+
+```cpp
+//默认大的优先级高
+priority_queue<int> q;
+//vector<int>填写的事用来承载底层数据结构堆堆容器
+//less<int>是对第一个参数的比较类。less<int>表示数字大的优先级越大，而greater<int>表示数字小的优先级越大
+priority_queue<int, vector<int>, less<int> >q;
+```
+
+### B. 结构体的优先级设置
+
+```cpp
+struct fruit {//重载运算符
+  string name;
+  int price;
+  friend bool operator < (fruit f1, fruit f2) {
+    return f1.price < f2.price;
+  }
+}
+priority_queue<fruit> q;//价格高的水果优先级高
+```
+
+```cpp
+struct fruit {
+  string name;
+  int price;
+}
+
+struct cmp {
+  bool operator()(fruit f1, fruit f2) {
+    return f1.price < f2.price;
+  }
+}
+priority_queue<fruit, vector<fruit>, cmp> q;
+```
+
+
+
+# 7. stack
+
+```cpp
+stack<typename> name;
+```
+
+* `push(x)`
+* `top()`
+* `pop()`
+* `empty()`
+* `size()`
+* `clear()`
+
+
+
+# 8. pair
+
+```cpp
+pair<string, int> p;
+p.first = "haha"; p.second = 5;
+
+p = make_pair("xixi", 55);
+
+p = pair<string, int>("heihei", 555);
+```
+
+
+
+## pair的比较
+
+先比较first, 再比较second
+
+
+
+## pair的常见用途
+
+* 用来代替二元结构体及其构造函数
+* 作为map的键值对来进行插入
+
+```cpp
+map<string, int> mp;
+mp.insert(make_pair("heihei", 5));
+mp.insert(pair<string, int>("haha", 10));
+```
+
+
+
+# 9. algorithm下的常用函数
+
+## 9.1 max(), min(), abs()
+
+abs(x)的x必须是整数，如果是浮点数要用fabs
+
+## 9.2 swap()
+
+swap(x, y)用来交换x,y的值
+
+## 9.3 reverse()
+
+reverse(it, it2)可以将数组指针在[it, it2)之间的元素或容器的迭代器在[it, it2)范围内的元素进行反转
+
+## 9.4 next_permutation()
+
+给出一个序列在全排列中的下一个序列
+
+```cpp
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+int main() {
+    int a[10] = {1, 2, 3};
+    do {
+        cout << a[0] << a[1] << a[2] << endl;
+    }while(next_permutation(a, a + 3));
+}
+```
+
+```
+123
+132
+213
+231
+312
+321
+```
+
+
+
+## 9.5 fill
+
+fill()可以把数组或容器的某一段区间赋为某个相同的值，和memset不同，这里的福祉可以是数组类型对应范围中的任意值
+
+```cpp
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+int main() {
+    int a[5] = {1, 2, 3, 4, 5};
+    fill(a, a + 5, 233);
+    for(int i = 0; i < 5; i++) {
+        cout << a[i] << endl;
+    }
+}
+```
+
+```
+233
+233
+233
+233
+233
+```
+
+
+
+## 9.6 sort
+
+`sort(首元素地址，尾元素地址的下一个地址，比较函数)`
+
+
+
+### 结构体的排序
+
+```cpp
+struct node{
+  int x, y;
+}ssd[10];
+bool cmp(node a, node b) {
+  if(a.x != b.x) return a.x > b.x;//x不相等时按x从大到小排序
+  else return a.y < b.y;//x相等时按y从小到大排序
+}
+sort(ssd, ssd + 3, cmp);
+```
+
+### 容器的排序
+
+```cpp
+bool cmp(int a, int b) {
+  return a > b;
+}
+vector<int> vi;
+sort(vi.begin() , vi.end(), cmp);
+
+```
+
+
+
+## 9.7 lower_bound() and upper_bound()
+
+```cpp
+lower_bound(first, last, val);
+```
+
+寻找在数组或容器的[first, last)范围内第一个值大于等于val的元素的位置，如果是数组，则返回该位置的指针；如果是容器，则返回该位置的迭代器
