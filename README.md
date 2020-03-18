@@ -23,8 +23,10 @@
     * [938.Range Sum of BST](tree/938.md)
     * [814. Binary Tree Pruning](tree/814.md)
     * [1008. Construct Binary Search Tree from Preorder Traversal](tree/1008.md)
-* DFS
-    * [*1079. Letter Tile Possibilities](DFS/*1079.md)
+* DFS&BFS
+    * [*1079. Letter Tile Possibilities](DFS_BFS/*1079.md)
+    * [1302. Deepest Leaves Sum](DFS_BFS/1302.md)
+    * [1315. Sum of Nodes with Even-Valued Grandparent](DFS_BFS/1315.md)
 * Greedy
     * [1221. Split a String in Balanced Strings](greedy/1221.md)
 * BinarySearch
