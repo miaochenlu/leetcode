@@ -6,7 +6,7 @@
 
 **深度优先搜索时一种枚举所有完整路径以遍历所有情况的搜索方法**
 
-<img src="/Users/jones/Library/Application Support/typora-user-images/image-20200313204850036.png" alt="image-20200313204850036" style="zoom:50%;" />、
+<img src="img/image-20200313204850036.png" alt="image-20200313204850036" style="zoom:50%;" />、
 
 DFS和入栈出栈的过程很相似，因此可以用栈来实现
 
@@ -89,7 +89,7 @@ void DFS(int index, int nowK, int sum, int sumSqu) {
 
 # 广度优先搜索(BFS)
 
-<img src="/Users/jones/Library/Application Support/typora-user-images/image-20200314141428486.png" alt="image-20200314141428486" style="zoom:50%;" />
+<img src="img/image-20200314141428486.png" alt="image-20200314141428486" style="zoom:50%;" />
 
 
 
@@ -112,7 +112,7 @@ void BFS(int s) {
 
 例子：
 
-<img src="/Users/jones/Library/Application Support/typora-user-images/image-20200314142622170.png" alt="image-20200314142622170" style="zoom:50%;" />
+<img src="img/image-20200314142622170.png" alt="image-20200314142622170" style="zoom:50%;" />
 
 ```cpp
 #include<cstdio>

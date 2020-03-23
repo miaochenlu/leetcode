@@ -2,8 +2,12 @@
 
 * Note
     * [算法初步](algorithmStartNote.md)
+    * [stl](stl.md)
+    * [search](search.md)
+    * [tree](tree.md)
+    * [math Problem](mathProblemNote.md)
 * 方法
-* [map](map.md)
+    * [map](map.md)
     * [单调栈](method/monotoneStack.md)
 * 字符串
     * [1108. Defanging an IP Address](string/1108.md)
@@ -23,8 +27,12 @@
     * [938.Range Sum of BST](tree/938.md)
     * [814. Binary Tree Pruning](tree/814.md)
     * [1008. Construct Binary Search Tree from Preorder Traversal](tree/1008.md)
+    * [1305. All Elements in Two Binary Search Trees](tree/1305.md)
+    * [894. All Possible Full Binary Trees](tree/894.md)
+    * [1325. Delete Leaves With a Given Value](tree/1325.md)
 * DFS&BFS
     * [*1079. Letter Tile Possibilities](DFS_BFS/*1079.md)
+    * [897. Increasing Order Search Tree](DFS_BFS/897.md)
     * [1302. Deepest Leaves Sum](DFS_BFS/1302.md)
     * [1315. Sum of Nodes with Even-Valued Grandparent](DFS_BFS/1315.md)
 * Greedy
