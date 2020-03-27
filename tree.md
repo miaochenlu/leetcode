@@ -446,3 +446,252 @@ int main() {
 
 ```
 
+
+
+# 4. 二叉查找树(BST)
+
+### A. 查找操作
+
+```cpp
+void search(node* root, int x) {
+  if(root == NULL) {
+    printf("search failed\n");
+    return;
+  }
+  if(x == root->data) {
+    printf("%d\n", root->data);
+  } else if(x < root->data) {
+    search(root->left, x);
+  } else {
+    search(root->right, x);
+  }
+}
+```
+
+### B. 插入操作
+
+```cpp
+//insert要在二叉树中插入一个数据域为x的新节点(注意参数root要加引用&)
+void insert(node* &root, int x) {
+  if(root == NULL) {
+    root = newNode(x);
+    return;
+  }
+  if(x == root->data) {
+    return;
+  } else if(x < root->data) {
+    insert(root->left, x);
+  } else {
+    insert(root->right, x);
+  }
+}
+```
+
+### C. 二叉查找树的建立
+
+```cpp
+node* Create(int data[], int n) {
+  node* root = NULL;
+  for(int i = 0; i < n; i++) {
+    insert(root, data[i]);
+  }
+  return root;
+}
+```
+
+### D. 二叉查找树的删除
+
+```cpp
+node* findMax(node* root) {
+  while(root->right != NULL)
+    root = root->right;
+  return root;
+}
+
+node* findMin(node* root) {
+  while(root->left != NULL)
+    root = root->left;
+  return root;
+}
+```
+
+```cpp
+void deleteNode(node* &root, int x) {
+  if(root == NULL)
+    return;
+  if(root->data == x) {
+    if(root->left == NULL && root->right == NULL) {
+      root = NULL;
+      return;
+    } else if(root->left) {
+      node* pre = findMax(root->left);
+      root->data = pre->data;
+      deleteNode(root->left, pre->data);
+    } else {
+      node* next = findMin(root->right);
+      root->data = next->data;
+      deleteNode(root->right, next->data);
+    }
+  } else if(root->data > x) {
+    deleteNode(root->left, x);
+  } else {
+    deleteNode(root->right, x);
+  }
+}
+```
+
+
+
+
+
+
+
+#### 1043 Is It a Binary Search Tree (25分)
+
+A Binary Search Tree (BST) is recursively defined as a binary tree which has the following properties:
+
+- The left subtree of a node contains only nodes with keys less than the node's key.
+- The right subtree of a node contains only nodes with keys greater than or equal to the node's key.
+- Both the left and right subtrees must also be binary search trees.
+
+If we swap the left and right subtrees of every node, then the resulting tree is called the **Mirror Image** of a BST.
+
+Now given a sequence of integer keys, you are supposed to tell if it is the preorder traversal sequence of a BST or the mirror image of a BST.
+
+Input Specification:
+
+Each input file contains one test case. For each case, the first line contains a positive integer *N* (≤1000). Then *N*integer keys are given in the next line. All the numbers in a line are separated by a space.
+
+Output Specification:
+
+For each test case, first print in a line `YES` if the sequence is the preorder traversal sequence of a BST or the mirror image of a BST, or `NO` if not. Then if the answer is `YES`, print in the next line the postorder traversal sequence of that tree. All the numbers in a line must be separated by a space, and there must be no extra space at the end of the line.
+
+Sample Input 1:
+
+```in
+7
+8 6 5 7 10 8 11
+```
+
+Sample Output 1:
+
+```out
+YES
+5 7 6 8 11 10 8
+```
+
+Sample Input 2:
+
+```in
+7
+8 10 11 8 6 7 5 
+```
+
+Sample Output 2:
+
+```out
+YES
+11 8 10 7 5 6 8
+```
+
+Sample Input 3:
+
+```in
+7
+8 6 8 5 10 9 11
+```
+
+Sample Output 3:
+
+```out
+NO
+```
+
+```cpp
+#include<cstdio>
+#include<vector>
+using namespace std;
+
+struct node {
+    int data;
+    node* left;
+    node* right;
+};
+
+int n;
+vector<int> original;
+
+void insert(node* &root, int x) {
+    if(root == NULL) {
+        root = new node;
+        root->data = x;
+        root->left = root->right = NULL;
+        return;
+    } else if(root->data > x) {
+        insert(root->left, x);
+    } else {
+        insert(root->right, x);
+    }
+}
+vector<int> pre, preMirror;
+vector<int> post, postMirror;
+void preOrder(node* root) {
+    if(root == NULL) return;
+    pre.push_back(root->data);
+    if(root->left) preOrder(root->left);
+    if(root->right) preOrder(root->right);
+}
+void preOrderMirror(node* root) {
+    if(root == NULL) return;
+    preMirror.push_back(root->data);
+    if(root->right) preOrderMirror(root->right);
+    if(root->left) preOrderMirror(root->left);
+}
+void postOrder(node* root) {
+    if(root == NULL) return;
+    if(root->left) postOrder(root->left);
+    if(root->right) postOrder(root->right);
+    post.push_back(root->data);
+}
+void postOrderMirror(node* root) {
+    if(root == NULL) return;
+    if(root->right) postOrderMirror(root->right);
+    if(root->left) postOrderMirror(root->left);
+    postMirror.push_back(root->data);
+}
+int main() {
+    scanf("%d", &n);
+    node* root = NULL;
+    for(int i = 0; i < n; i++) {
+        int data;
+        scanf("%d", &data);
+        original.push_back(data);
+        insert(root, data);
+    }
+    preOrder(root);
+    preOrderMirror(root);
+    postOrder(root);
+    postOrderMirror(root);
+    // printf("size: %d\n", pre.size());
+    // for(int i = 0; i < pre.size(); i++) {
+    //     printf("%d %d\n", pre[i], original[i]);
+    // }
+    if(original == pre) {
+        printf("YES\n");
+        for(int i = 0; i < post.size(); i++) {
+            printf("%d", post[i]);
+            if(i < post.size() - 1) printf(" ");
+        }
+    } else if(original == preMirror) {
+        printf("YES\n");
+        for(int i = 0; i < postMirror.size(); i++) {
+            printf("%d", postMirror[i]);
+            if(i < post.size() - 1) printf(" ");
+        }
+    } else {
+        printf("NO\n");
+    }
+
+}
+```
+
