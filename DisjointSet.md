@@ -119,8 +119,8 @@ void Union(int a, int b) {
 int findFather(int x) {
   if(x == father[x]) return x;
   else {
-    int F = findFather(father[v]);
-    father[v] = F;
+    int F = findFather(father[x]);
+    father[x] = F;
     return F;
   }
 }
