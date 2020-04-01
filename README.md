@@ -48,6 +48,8 @@
     * [*1004. Max Consecutive Ones III](Twopointers/*1004.md)
 * Union Find
     * [*959. Regions Cut By Slashes](UnionFind/*959.md)
+    * [547. Friend Circles](UnionFind/547.md)
+    * [684. Redundant Connection](UnionFind/684.md)
 * 打表
     * [12.Integer to Roman](打表/12.md)
 
