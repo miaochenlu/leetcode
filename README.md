@@ -20,6 +20,7 @@
    * [* 50. Reveal Cards In Increasing Order](arrayMatrix/*50.md)
    * [*763. Partition Labels](arrayMatrix/*763.md)
    * [1021. Remove Outermost Parentheses](arrayMatrix/1021.md)
+   * [1387. Sort Integers by The Power Value](arrayMatrix/1387.md)
 * 树
 
     * [*1038.Binary search Tree to Greater Sum Tree](tree/*1038.md)
@@ -31,6 +32,7 @@
     * [1305. All Elements in Two Binary Search Trees](tree/1305.md)
     * [894. All Possible Full Binary Trees](tree/894.md)
     * [1325. Delete Leaves With a Given Value](tree/1325.md)
+    * [1161. Maximum Level Sum of a Binary Tree](tree/1161.md)
 * DFS&BFS
     * [*1079. Letter Tile Possibilities](DFS_BFS/*1079.md)
     * [897. Increasing Order Search Tree](DFS_BFS/897.md)

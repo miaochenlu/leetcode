@@ -320,5 +320,128 @@ int main() {
 
 
 
+### B.BFS遍历图
+
+使用BFS遍历图的基本思想是建立一个队列，并把初始顶点加入队列，此后每次都取出队首顶点进行访问，并把从该顶点出发可以到达的未曾加入过队列(而不是而访问)的顶点全部加入队列，直到队列为空。
+
+```cpp
+BFS(u) {
+  queue q; //定义队列q
+  将u入队;
+  inq[u] = true; //设置u已被加入过队列
+  while(q非空) {
+    取出q的队首元素u进行访问;
+    for(从u出发可达的所有顶点v) {
+      if(inq[v] == false) {
+        将v入队;
+        inq[v] = true;	//设置v已被加入过队列
+      }
+    }
+  }
+}
+```
+
+#### 邻接矩阵实现
+
+```cpp
+int n, G[MAXV][MAXV];//n为顶点树
+bool inq[MAXV] = {false};//若顶点i曾入过队列，则inq[i]=true
+
+void BFS(int u) { //遍历u所在的连通块
+  queue<int> q;
+  q.push(u);
+  inq[u] = true;
+  while(!q.empty()) {
+    int u = q.front();
+    q.pop();
+    for(int v = 0; v < n; v++) {
+      if(inq[v] == false && G[u][v] != INF) {
+        q.push(v);
+        inq[v] = true;
+      }
+    }
+  }
+}
+void BFSTrave() {
+  for(int u = 0; u < n; u++) {
+    if(inq[u] == false) {
+      BFS(u);
+    }
+  }
+}
+```
+
+#### 邻接表实现
+
+```cpp
+vector<int> Adj[MAXV];
+int n;
+bool inq[MAXV] = {false};
+
+void BFS(int u) {
+  queue<int> q;
+  q.push(u);
+  inq[u] = true;
+  while(!q.empty()) {
+    int u = q.front();
+    q.pop();
+    for(int i = 0; i < Adj[u].size(); i++) {
+      int v = Adj[u][i];
+      if(inq[v] == false) {
+        q.push(v);
+        inq[v] = true;
+      }
+    }
+  }
+}
+
+void BFSTrave() {
+  for(int u = 0; u < n; u++) {
+    if(inq[u] == false) {
+      BFS(q);
+		}
+  }
+}
+```
+
+<br>
+
+```cpp
+struct Node {
+  int v;
+  int layer;
+};
+```
+
+```cpp
+vector<Node> Adj[N];
+```
+
+```cpp
+void BFS(int s) {
+  queue<Node> q;
+  Node start;
+  start.v = s;
+  start.layer = 0;
+  q.push(start);
+  inq[start.v] = true;
+  while(!q.empty()) {
+    Node topNode = q.front();
+    q.pop();
+    int u = topNode.v;
+    for(int i = 0; i < Adj[u].size(); i++) {
+      Node next = Adj[u][i];
+      next.layer = topNode.layer + 1;
+      if(inq[next.v] == false) {
+        q.push(next);
+        inq[next.v] = true;
+      }
+    }
+  }
+}
+```
+
+
+
 
 
