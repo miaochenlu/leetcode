@@ -443,5 +443,113 @@ void BFS(int s) {
 
 
 
+<br>
+
+# 最短路径
+
+### A. Dijkstra算法
+
+Dijkstra算法用来解决单源最短路径问题, 即给定图G(V,E)和起点s, 求从起点s到达其他顶点的最短距离
+
+设置集合S存放已被访问的顶点，然后执行n次下面的两个步骤(n为顶点个数)
+
+1. 每次从集合V-S(即没有被访问过的顶点)中选择与起点s的最短距离最小的一个顶点u, 访问并加入集合S
+2. 令顶点u为中介点，优化起点s与从u能到达的顶点v之间的最短距离
+
+在具体实现时
+
+1. 集合S可以用一个bool数组vis[]来实现，当vis[i]==true时表示顶点$V_i$已经被访问，当vis[i]==false时表示顶点$V_i$未被访问
+2. 令int数组d[]表示起点s到达顶点$V_i$的最短距离，初始时除了起点s的d[s]赋为0，其余顶点都初始化为一个很大的数,可以使用$10^9$, 也可以用0x3fffffff, 但是不要用0x7ffffffff, 因为这样两个数相加会超过int的表示范围
+
+伪代码
+
+```cpp
+Dijkstra(G, d[], s) {
+  初始化;
+  for(循环n次) {
+    u = 使d[u]最小的还未被访问的顶点的编号;
+    记u已被访问;
+    for(从u出发能到达的所有顶点v) {
+      if(v未被访问&&以u为中介使s到顶点v的最短距离d[v]更优) {
+        优化d[v];
+      }
+    }
+  }
+}
+```
+
+<br>
+
+```cpp
+const int MAXV = 1000;
+const int INF = 10000000;
+```
+
+#### 邻接矩阵实现
+
+```cpp
+int n, G[MAXV][MAXV];
+int d[MAXV];
+bool vis[MAXV] = {false};
+
+void Dijkstra(int s) {
+  fill(d, d + MAXV, INF); //fill函数将整个d数组初始化为INF
+  d[s] = 0;
+  for(int i = 0; i < n; i++) {
+    int u = -1, MIN = INF;
+    //从未访问的顶点中选择一个到s的距离最小的顶点u
+    for(int j = 0; j < n; j++) {
+      if(vis[j] == false && d[j] < MIN) {
+        u = j;
+        MIN = d[j];
+      }
+    }
+    if(u == -1) return;
+    vis[u] = true;
+    //更新从u能到达的顶点的最短距离
+    for(int v = 0; v < n; v++) {
+      if(vis[v] == false && G[u][v] != INF && d[u] + G[u][v] < d[v])
+        d[v] = d[u] + G[u][v];
+    }
+  }
+}
+```
+
+#### 邻接表实现
+
+```cpp
+struct Node {
+  int v;
+  int dis;
+};
+vector<Node> Adj[MAXN];
+int n;
+int d[MAXV];
+bool vis[MAXV] = {false};
+
+void Dijkstra(int s) {
+  fill(d, d + MAXV, INF);
+  d[s] = 0;
+  for(int i = 0; i < n; i++) {
+    int u = -1; MIN = INF;
+    for(int j = 0; j < Adj[i].size(); j++) {
+      if(vis[j] == false && d[j] < MIN) {
+        u = j;
+        MIN = d[j];
+      }
+    }
+    if(u == -1) return;
+    vis[u] = true;
+    
+    for(int j = 0; j < Adj[u].size(); j++) {
+      int nodeID = Adj[u][j].v;
+      if(vis[nodeID] == false && d[u] + Adj[u][j].dis < d[nodeID]) {
+        d[nodeID] = d[u] + Adj[u][j].dis;
+      }
+    }
+  }
+}
+```
+
 
 
