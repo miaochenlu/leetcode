@@ -551,5 +551,245 @@ void Dijkstra(int s) {
 }
 ```
 
+复杂度分析:
+
+主要是外层循环$O(V)$与内层循环(寻找最小的d[u]需要$O(V)$, 枚举v需要$O(adj[u].size())$)。对于整个程序来说，枚举v的次数总共为$O(\sum_{u=0}^{n-1}adj[u].size)=O(E)$, 因此总复杂度为$O(V^2+E)$
+
+寻找最小d[u]的过程可以优化，使用最小堆，复杂度可以降为$O(VlogV+E)$
+
+Dijkstra算法只能应对所有边权都是非负数的情况，如果边权出现负数，Dijkstra算法可能会出错，最好使用SPFA算法
+
+<br>
+
+#### 求解最短路径的写法
+
+在Dijkstra算法中有一段
+
+```cpp
+if(v未被访问 && 以u为中介点可以使起点s到顶点v的最短距离d[v]更优) {
+  优化d[v];
+}
+```
+
+我们设置一个数组pre[], pre[v]记录从起点s到顶点v的最短路径上v的前一个顶点(前驱节点)
+
+```cpp
+if(v未被访问 && 以u为中介点可以使起点s到顶点v的最短距离d[v]更优) {
+  优化d[v];
+  令v的前驱为u;
+}
+```
+
+<br>
+
+```cpp
+int n, G[MAXV][MAXV];
+int d[MAXV];
+int pre[MAXV];
+bool vis[MAXV] = {false};
+
+void Dijkstra(int s) {
+  fill(d, d + MAXV, INF);
+  for(int i = 0; i < n; i++) pre[i] = i;
+  d[s] = 0;
+  for(int i = 0; i < n; i++) {
+    int u = -1; int MIN = INF;
+    for(int j = 0; j < n; j++) {
+      if(vis[j] == false && d[j] < MIN) {
+        u = j;
+        MIN = d[j];
+      }
+    }
+    
+    if(u == -1) return;
+    vis[u] = true;
+    
+    for(int v = 0; v < n; v++) {
+      if(vis[v] == false && G[u][v] != INF && d[u] + G[u][v] < d[v]) {
+        d[v] = d[u] + G[u][v];
+        path[v] = u;
+      }
+    }
+  }
+}
+```
+
+<br>
+
+如果要得到整一条路径
+
+```cpp
+void DFS(int s, int v) {
+  if(v == s) {
+    printf("%d\n", s);
+    return;
+  }
+  DFS(s, pre[v]);
+  printf("%d\n", v);
+}
+```
+
+<br>
+
+当然，有时候最短距离最小的路径不止一条。碰到这种有两条以上可以达到最短距离的路径，题目会给出第二个标尺(第一标尺是距离)，要求在所在所有最短路径中选择第二标尺最优的一条路径。第二标尺常见的是以下三种出题方法或其组合：
+
+1. 给每条边再增加一个边权(比如花费)，然后要求在最短路径有多条时要求路径上的花费之和最小
+2. 给每个点增加一个点权(比如每个城市能收集到的物资)，然后在最短路径有多条时要求路径上的点权之和最大
+3. 直接问有多少条最短路径
+
+针对第一种新增边权。以新增的边权代表花费为例，用cost\[u][v]表示u-->v的花费(题目给出)， 并增加一个数组c[], 令从起点到达顶点u的最少花费为c[u], 初始化时只有c[s]为0， 其余c[u]均为INF, 这样就可以在d[u]+G\[u][v]<d[v]时更新d[v]和c[v], 而当d[u]+G\[u][v]=d[v]且c[u]+cost\[u][v]<c[v]时更新c[v]
+
+```cpp
+for(int v = 0; v < n; v++) {
+  if(vis[v] == false && G[u][v] != INF) {
+    if(d[u] + G[u][v] < d[v]) {
+      d[v] = d[u] + G[u][v];
+      c[v] = c[u] + cost[u][v];
+		} else if(d[u] + G[u][v] == d[v] && c[u] + cost[u][v] < c[v]) {
+      c[v] = c[u] + cost[u][v];
+    }
+  }
+}
+```
+
+针对第二种情况新增点权。以新增的点权代表城市中能收集到的物资为例，用weight[u]表示盛水u中的物资数目(由题目输入)，并增加一个数组w[], 令从起点到达顶点u可以收集到的最大物资为w[u], 初始化时只有w[s]为weight[s], 其余w[u]均为0。 这样就可以在d[u]+G\[u][v]<d[v]时更新d[v]和w[v]。 而当d[u]+G\[u][v]==d[v]且w[u]+weight[v] > w[v]时更新w[v]
+
+```cpp
+for(int v = 0; v < n; v++) {
+  if(vis[v] == false && G[u][v] != INF) {
+    if(d[u] + G[u][v] < d[v]) {
+      d[v] = d[u] + G[u][v];
+      w[v] = w[u] + weight[v];
+    } else if(d[u] + G[u][v] == d[v] && w[u] + weight[v] > w[v]) {
+      w[v] = w[u] + weight[v];
+    }
+  }
+}
+```
+
+针对求解最短路径条数，只需新增一个数组num[], 令从起点s到达顶点u的最短路径条数为num[u], 初始化时只有num[s]为1，其余num[u]均为0，这样就可以在d[u]+G\[u][v]<d[v]时更新d[v], 并且让num[v]继承num[u]; 当d[u]+G\[u][v]==d[v]时将num[u]加到num[v]上
+
+```cpp
+for(int v = 0; v < n; v++) {
+  if(vis[v] == false && G[u][v] != INF) {
+    if(d[u] + G[u][v] < d[v]) {
+      d[v] = d[u] + G[u][v];
+      num[v] = num[u];
+    } else if(d[i] + G[u][v] == d[v]) {
+      num[v] += num[u];
+    }
+  }
+}
+```
+
+
+
+#### Example
+
+A1003 Emergency (25分)
+
+As an emergency rescue team leader of a city, you are given a special map of your country. The map shows several scattered cities connected by some roads. Amount of rescue teams in each city and the length of each road between any pair of cities are marked on the map. When there is an emergency call to you from some other city, your job is to lead your men to the place as quickly as possible, and at the mean time, call up as many hands on the way as possible.
+
+Input Specification:
+
+Each input file contains one test case. For each test case, the first line contains 4 positive integers: *N*(≤500) - the number of cities (and the cities are numbered from 0 to *N*−1), *M* - the number of roads, *C*1 and *C*2 - the cities that you are currently in and that you must save, respectively. The next line contains *N* integers, where the *i*-th integer is the number of rescue teams in the *i*-th city. Then *M* lines follow, each describes a road with three integers *c*1, *c*2 and *L*, which are the pair of cities connected by a road and the length of that road, respectively. It is guaranteed that there exists at least one path from *C*1 to *C*2.
+
+Output Specification:
+
+For each test case, print in one line two numbers: the number of different shortest paths between *C*1and *C*2, and the maximum amount of rescue teams you can possibly gather. All the numbers in a line must be separated by exactly one space, and there is no extra space allowed at the end of a line.
+
+Sample Input:
+
+```in
+5 6 0 2
+1 2 1 5 3
+0 1 1
+0 2 2
+0 3 1
+1 2 1
+2 4 1
+3 4 1 
+```
+
+Sample Output:
+
+```out
+2 4
+```
+
+
+
+
+
+```cpp
+#include<cstdio>
+#include<iostream>
+#include<vector>
+using namespace std;
+
+const int MAXV = 510;
+const int INF = 0x3fffffff;
+int n, m, s, rescueNum, G[MAXV][MAXV];
+int weight[MAXV], w[MAXV];
+int d[MAXV];
+bool vis[MAXV] = {false};
+int num[MAXV];
+
+void Dijkstra(int s) {
+    fill(d, d + MAXV, INF);
+    d[s] = 0;
+    num[s] = 1;
+    w[s] = weight[s];
+
+    for(int i = 0; i < n; i++) {
+        int u = -1, MIN = INF;
+        for(int j = 0; j < n; j++) {
+            if(vis[j] == false && d[j] < MIN) {
+                u = j;
+                MIN = d[j];
+            }
+        }
+
+        if(u == -1) return;
+        vis[u] = true;
+        for(int v = 0; v < n; v++) {
+            if(vis[v] == false && G[u][v] != INF) {
+                if(d[u] + G[u][v] < d[v]) {
+                    d[v] = d[u] + G[u][v];
+                    w[v] = w[u] + weight[v];
+                    num[v] = num[u];
+                } else if(d[u] + G[u][v] == d[v]) {
+                    num[v] += num[u];
+                    if(w[u] + weight[v] > w[v]) {
+                        w[v] = w[u] + weight[v];
+                    }
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    scanf("%d%d%d%d", &n, &m, &s, &rescueNum);
+    for(int i = 0; i < n; i++) {
+        scanf("%d", &weight[i]);
+    }
+
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++)
+            G[i][j] = INF;
+    }
+
+    for(int i = 0; i < m; i++) {
+        int u, v, len;
+        scanf("%d%d%d", &u, &v, &len);
+        G[u][v] = G[v][u] = len;
+    }
+    Dijkstra(s);
+    printf("%d %d", num[rescueNum], w[rescueNum]);
+
+}
+```
+
 
 
