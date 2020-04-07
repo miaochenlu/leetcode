@@ -445,7 +445,7 @@ void BFS(int s) {
 
 <br>
 
-# 最短路径
+# 3. 最短路径
 
 ### A. Dijkstra算法
 
@@ -631,6 +631,8 @@ void DFS(int s, int v) {
 
 <br>
 
+#### 存在第二标尺的情况
+
 当然，有时候最短距离最小的路径不止一条。碰到这种有两条以上可以达到最短距离的路径，题目会给出第二个标尺(第一标尺是距离)，要求在所在所有最短路径中选择第二标尺最优的一条路径。第二标尺常见的是以下三种出题方法或其组合：
 
 1. 给每条边再增加一个边权(比如花费)，然后要求在最短路径有多条时要求路径上的花费之和最小
@@ -682,114 +684,192 @@ for(int v = 0; v < n; v++) {
 }
 ```
 
+### B. Bellman-Ford算法和SPFA算法
 
+Dijkstra不能解决存在负权边的最短路径问题，因此提出Bellman-Ford算法
 
-#### Example
+Bellman-Ford问题可以解决单源最短路径问题，也能处理有负权边的情况。
 
-A1003 Emergency (25分)
+考虑graph中的环。根据环中边的边权之和的正负，可以将环分为零环，正环，负环。
 
-As an emergency rescue team leader of a city, you are given a special map of your country. The map shows several scattered cities connected by some roads. Amount of rescue teams in each city and the length of each road between any pair of cities are marked on the map. When there is an emergency call to you from some other city, your job is to lead your men to the place as quickly as possible, and at the mean time, call up as many hands on the way as possible.
+<img src="/Users/jones/Library/Application Support/typora-user-images/image-20200407151038570.png" alt="image-20200407151038570" style="zoom:50%;" />
 
-Input Specification:
+正环和零环不会影响最短路径的求解。如果存在负环，那么将在负环无限循环；但是如果负环无法从源点出发到达，那么最短路径的求解也不会受到影响。
 
-Each input file contains one test case. For each test case, the first line contains 4 positive integers: *N*(≤500) - the number of cities (and the cities are numbered from 0 to *N*−1), *M* - the number of roads, *C*1 and *C*2 - the cities that you are currently in and that you must save, respectively. The next line contains *N* integers, where the *i*-th integer is the number of rescue teams in the *i*-th city. Then *M* lines follow, each describes a road with three integers *c*1, *c*2 and *L*, which are the pair of cities connected by a road and the length of that road, respectively. It is guaranteed that there exists at least one path from *C*1 to *C*2.
+<br>
 
-Output Specification:
+Bellman-Ford算法设置一个数组d, 用来存放从源点到达各个顶点的最短距离。同时Bellman-Ford算法返回一个bool值: 如果其中存在从源点可达的负环，那么函数将返回false
 
-For each test case, print in one line two numbers: the number of different shortest paths between *C*1and *C*2, and the maximum amount of rescue teams you can possibly gather. All the numbers in a line must be separated by exactly one space, and there is no extra space allowed at the end of a line.
+<br>
 
-Sample Input:
-
-```in
-5 6 0 2
-1 2 1 5 3
-0 1 1
-0 2 2
-0 3 1
-1 2 1
-2 4 1
-3 4 1 
-```
-
-Sample Output:
-
-```out
-2 4
-```
-
-
-
-
+对graph中对边进行V-1轮操作，每轮都遍历图中的所有边: 对每条边u->v, 如果以u为中介点可以使d[v]更小，即d[u]+length[u->v] < d[v], 就用d[u]+length[u->v]更新d[v]。
 
 ```cpp
-#include<cstdio>
-#include<iostream>
-#include<vector>
-using namespace std;
-
-const int MAXV = 510;
-const int INF = 0x3fffffff;
-int n, m, s, rescueNum, G[MAXV][MAXV];
-int weight[MAXV], w[MAXV];
-int d[MAXV];
-bool vis[MAXV] = {false};
-int num[MAXV];
-
-void Dijkstra(int s) {
-    fill(d, d + MAXV, INF);
-    d[s] = 0;
-    num[s] = 1;
-    w[s] = weight[s];
-
-    for(int i = 0; i < n; i++) {
-        int u = -1, MIN = INF;
-        for(int j = 0; j < n; j++) {
-            if(vis[j] == false && d[j] < MIN) {
-                u = j;
-                MIN = d[j];
-            }
-        }
-
-        if(u == -1) return;
-        vis[u] = true;
-        for(int v = 0; v < n; v++) {
-            if(vis[v] == false && G[u][v] != INF) {
-                if(d[u] + G[u][v] < d[v]) {
-                    d[v] = d[u] + G[u][v];
-                    w[v] = w[u] + weight[v];
-                    num[v] = num[u];
-                } else if(d[u] + G[u][v] == d[v]) {
-                    num[v] += num[u];
-                    if(w[u] + weight[v] > w[v]) {
-                        w[v] = w[u] + weight[v];
-                    }
-                }
-            }
-        }
+for(i = 0; i < n - 1; i++) {
+  for(each edge u->v) {
+    if(d[u] + length[u->v] < d[v]) {
+      d[v] = d[u] + length[u->v];
     }
-}
-
-int main() {
-    scanf("%d%d%d%d", &n, &m, &s, &rescueNum);
-    for(int i = 0; i < n; i++) {
-        scanf("%d", &weight[i]);
-    }
-
-    for(int i = 0; i < n; i++) {
-        for(int j = 0; j < n; j++)
-            G[i][j] = INF;
-    }
-
-    for(int i = 0; i < m; i++) {
-        int u, v, len;
-        scanf("%d%d%d", &u, &v, &len);
-        G[u][v] = G[v][u] = len;
-    }
-    Dijkstra(s);
-    printf("%d %d", num[rescueNum], w[rescueNum]);
-
+  }
 }
 ```
 
+此时，如果图中没有从源点可达的负环，那么数组d中的所有值都应当已经达到最优。
 
+只需要再对所有边进行一轮操作，判断是否有某条边u->v仍然满足d[u]+length[u->v] < d[v], 如果有，则说明图中有从源点可达的负环，返回false
+
+```cpp
+for(each edge u->v) {
+  if(d[u] + length[u->v] < d[v]) {
+    return false;
+  }
+}
+return true;
+```
+
+<a href="https://blog.csdn.net/yuewenyao/article/details/81026278">算法原理</a>
+
+由于Bellman-Ford算法需要遍历所有边，所以如果使用邻接矩阵的话，复杂度会很高，是$O(n^3)$
+
+```cpp
+struct Node {
+  int v, dis;	//v为邻接边的目标顶点, dis为邻接边的边权
+};
+vector<Node> Adj[MAXV];	//图G的邻接表
+int n;									//n为顶点数
+int d[MAXV];						//起点到达各点的最短路径长度
+
+bool Bellman(int s) {		//s为源点
+  fill(d, d + MAXV, INF);
+  d[s] = 0;
+  //求解数组d的部分
+  for(int i = 0; i < n - 1; i++) {	//执行n-1轮操作,n为顶点数
+    for(int u = 0; u < n; u++) {		//每轮操作都遍历所有边
+      for(int j = 0; j < Adj[u].size(); j++) {
+        int v = Adj[u][j].v;			//邻接边的顶点
+        int dis = Adj[u][j].dis;	//邻接边的边权
+        if(d[u] + dis < d[v]) {		//以u为中介点可以使d[v]更小
+          d[v] = d[u] + dis;			//松弛操作
+        }
+			}
+    }
+  }
+  //以下为判断负环的代码
+  for(int u = 0; u < n; u++) {
+    for(int j = 0; j < Adj[u].size(); j++) {
+        int v = Adj[u][j].v;
+        int dis = Adj[u][j].dis;
+        if(d[u] + dis < d[v]) {
+         	return false;
+        }
+    }
+  }
+  return true;
+}
+```
+
+多重标尺的做法与Dijkstra算法差不多，但是统计最短路径条数的做法有点不同。
+
+Bellman-Ford算法期间会多次访问曾经访问过的顶点，如果单纯按照Dijkstra算法中介绍的num数组的写法，将会反复累计已经计算过的顶点，如果单纯按照Dijkstra算法中介绍的num数组的写法，将会反复累计已经计算过的顶点。为了解决这个问题，需要设置记录前驱的数组set<int> pre[MAXV], 当遇到一条河已有最短路径长度相同的路径时，必须重新计算最短路径条数。
+
+```cpp
+void Bellman(int s) {
+  fill(d, d + MAXV, INF);
+  memset(num, 0, sizeof(num));
+  memset(w, 0, sizeof(w));
+  d[s] = 0;
+  w[s] = weight[s];
+  num[s] = 1;
+  
+  for(int i = 0; i < n - 1; i++) {
+    for(int u = 0; u < n; u++) {
+      for(int j = 0; j < Adj[u].size(); j++) {
+        int v = Adj[u][j].v;
+        int dis = Adj[u][j].dis;
+        if(d[u] + dis < d[v]) {
+          d[v] = d[u] + dis;
+          w[v] = w[u] + weight[v];
+          num[v] = num[u];
+          pre[v].clear();
+          pre[v].insert(u);
+        } else if(d[u] + dis == d[v]) {
+          if(w[u] + weight[v] > w[v]) {
+            w[v] = w[u] + weight[v];
+          }
+          pre[v].insert(u);
+          num[v] = 0;
+          set<int>::iterator it;
+          for(it = pre[v].begin(); it != pre[v].end(); it++) {
+            num[v] += num[*it];
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+虽然Bellman-Ford算法思路简单，但是复杂度高。
+
+Bellman-Ford算法的每轮操作需要操作所有边，显然这里会有大量无意义的操作。注意到，只有当某个顶点u的d[u]值改变时，从它出发的边的邻接点v的d[v]值才有可能改变。因此可以进行一个优化: 建立一个队列，每次将队首顶点u取出，然后对从u出发的所有边u->v进行松弛操作。
+
+```cpp
+queue<int> Q;
+源点s入队;
+while(队列非空) {
+  取出队首元素u;
+  for(u的所有邻接边u->v) {
+    if(d[u] + dis < d[v]) {
+      d[v] = d[u] + dis;
+      if(v当前不在队列) {
+        v入队;
+        if(v入队次数大于n-1) {
+          说明有负环, return;
+        }
+      }
+    }
+  }
+}
+```
+
+这种优化后的算法被称为SPFA(Shortest path faster algorithm), 他的期望时间复杂度时$O(kE)$
+
+```cpp
+vector<Node> Adj[MAXV];
+int n, d[MAXV], num[MAXV];//num记录顶点的入队次数
+bool inq[MAXV];
+
+bool SPFA(int s) {
+  memset(inq, false, sizeof(inq));
+  memset(num, 0, sizeof(num));
+  fill(d, d + MAXV, INF);
+  
+  queue<int> Q;
+  Q.push(s);
+  inq[s] = true;
+  num[s]++;
+  d[s] = 0;
+  
+  while(!Q.empty()) {
+    int u = Q.front(); Q.pop();
+    inq[u] = false;
+    
+    for(int j = 0; j < Adj[u].size(); j++) {
+      int v = Adj[u][j].v;
+      int dis = Adj[u][j].dis;
+      
+      if(d[u] + dis < d[v]) {
+        d[v] = d[u] + dis;
+        if(!inq[v]) {
+          Q.push(v);
+          inq[v] = true;
+          num[v]++;
+          if(num[v] >= n) return false;
+        }
+      }
+    }
+  }
+  return true;
+}
+```
 

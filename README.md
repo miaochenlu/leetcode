@@ -39,6 +39,9 @@
     * [1302. Deepest Leaves Sum](DFS_BFS/1302.md)
     * [1315. Sum of Nodes with Even-Valued Grandparent](DFS_BFS/1315.md)
     * [841. Keys and Rooms](841.md)
+* Graph
+    * [PATA1003.Emergency](graph/PATA1003.md)
+    * [PATA1030.Travel Plan](graph/PATA1030.md)
 * Greedy
     * [1221. Split a String in Balanced Strings](greedy/1221.md)
 * BinarySearch
