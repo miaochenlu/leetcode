@@ -873,3 +873,151 @@ bool SPFA(int s) {
 }
 ```
 
+<br>
+
+### C. Floyd算法
+
+解决全源最短路径问题，即对给定的图G(V,E), 求任意两点u,v之间的最短路径长度，复杂度为$O(n^3)$。 由于$n^3$的复杂度决定了顶点数n的限制约在200以内，因此可以使用邻接矩阵实现
+
+Floyd算法基于这样一个事实：如果存在顶点k, 使得以k作为中介点时顶点i和顶点j的当前最短距离缩短，则使用顶点k作为顶点i和顶点j的中介点。即当`dis[i][k] + dis[k][j] < dis[i][j]`时，令`dis[i][j]=dis[i][k] + dis[k][j]`
+
+```cpp
+枚举顶点k属于[1,n]
+  	以顶点k作为中介点，枚举所有顶点对i和j (i属于[1,n], j属于[1,n])
+  		如果dis[i][k] + dis[k][j] < dis[i][j]成立
+  			赋值dis[i][j] = dis[i][k] + dis[k][j];
+```
+
+<br>
+
+```cpp
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+
+const int INF = 0x3fffffff;
+const int MAXV = 200;
+int n, m;	//n为顶点数，m为边数
+int dis[MAXV][MAXV];	//dis[i][j]表示顶点i和顶点j的最短距离
+
+void Floyd() {
+  for(int k = 0; k < n; k++) {
+    for(int i = 0; i < n; i++) {
+      for(int j = 0; j < n; j++) {
+        if(dis[i][k] != INF && dis[k][j] != INF && dis[i][k] + dis[k][j] < dis[i][j]) {
+          dis[i][j] = dis[i][k] + dis[k][j];
+        }
+      }
+    }
+  }
+}
+```
+
+# 4. 最小生成树
+
+最小生成树的3个性质
+
+1. 最小生成树是树，边数=顶点数-1， 且树内一定不会有环
+2. 对给定的图G(V,E), 其最小生成树可以不唯一，但是其边权之和一定是唯一的
+3. 由于最小生成树是无法在无向图上生成的，因此其根节点可以是这棵树上的任意一个节点
+
+<br>
+
+### A.  prim算法
+
+基本思想是对图G(V,E)设置集合S,存放已被访问的顶点，然后每次从集合V-S中选择与集合S的最短距离最小的一个顶点(记为u), 访问并加入集合S。之后，以顶点u为中介点，优化所有从u能到达的顶点v与集合S之间的最短距离，这样的操作执行n次(n为顶点个数)，直到集合S已包含所有顶点。
+
+```cpp
+//G为图，数组d为顶点与集合S的最短距离
+Prim(G, d[]) {
+	初始化;
+  for(循环n次) {
+    u = 使d[u]最小的还未被访问的顶点的标号;
+    记u已被访问;
+    for(从u出发能到达的所有顶点v) {
+      if(v未被访问&&以u为中介点使得v与集合S的最短距离d[v]更优) {
+        将G[u][v]赋值给v与集合S的最短距离d[v];
+      }
+    }
+  }
+}
+```
+
+```cpp
+const int MAXV = 1000;
+const int INF = 0x3fffffff;
+```
+
+#### 邻接矩阵实现
+
+```cpp
+int n, G[MAXV][MAXV];
+int d[MAXV];	//顶点与集合s的最短距离
+bool vis[MAXV] = {false};
+
+int prim() {
+  fill(d, d + MAXV, INF);
+  d[0]  = 0;
+  int ans = 0;	//存放最小生成树的边权之和
+  
+  for(int i = 0; i < n; i++) {
+    int u = -1, MIN = INF;
+    for(int j = 0; j < n; j++) {
+      if(vis[j] == false && d[j] < MIN) {
+        u = j;
+        MIN = d[j];
+      }
+    }
+    if(u == -1) return 01;
+    vis[u] = true;
+    ans += d[v];
+    
+    for(int v = 0; v < n; v++) {
+      if(vis[v] == false && G[u][v] != INF && G[u][v] < d[v]) {
+        d[v] = G[u][v];
+      }
+    }
+  }
+  return ans;
+}
+```
+
+
+
+#### 邻接表实现
+
+```cpp
+struct Node {
+  int v, dis;
+};
+vector<Node> Adj[MAXV];
+int n;
+int d[MAXV];
+bool vis[MAXV] = {false};
+
+int prim() {
+  fill(d, d + MAXV, INF);
+  dis[0] = 0;
+  int ans = 0;
+  for(int i = 0; i < n; i++) {
+    int u = -1, MIN = INF;
+    for(int j = 0; j < n; j++) {
+      if(vis[j] == false && dis[j] < MIN) {
+        u = j;
+        MIN = dis[j];
+      }
+    }
+    if(u == -1) return -1;
+    vis[u] = true;
+    ans += d[u];
+    
+    for(int j = 0; j < Adj[u].size(); j++) {
+      int v = Adj[u][j].v;
+      if(vis[v] == false &&  Adj[u][j].dis < d[v]) {
+        d[v] = Adj[u][j].dis;
+      }
+    }
+  }
+}
+```
+
