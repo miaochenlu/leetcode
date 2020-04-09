@@ -1021,3 +1021,65 @@ int prim() {
 }
 ```
 
+### B. Kruskal 算法
+
+1. 对所有边按边权从小到大排序
+2. 按边权从小到大测试所有边，如果当前测试边所连接的两个顶点不在同一个连通块中，则把这条测试边加入最小生成树，否则舍弃
+3. 不断执行步骤2，直到最小生成树中的边数=总顶点数-1或者测试完所有边时结束。而当结束时最小生成树的边数<总顶点数-1, 说明该图不连通
+
+```cpp
+int kruskal() {
+  令最小生成树的边权之和为ans, 最小生成树的当前边数Num_Edge;
+  将所有边按边权从小到大排序;
+  for(从小到大枚举所有边) {
+    if(当前测试边的两个端点在不同的连通块中) {
+      将该测试边加入最小生成树中;
+      ans += 测试边的边权;
+      最小生成树的当前边数Num_Edge加1;
+      当边数Num_Edge等于顶点数减1时结束循环;
+    }
+  }
+  return ans;
+}
+```
+
+这个伪代码还存在两个不太直观的实现细节：
+
+* 如何判断测试边的两个端点是否在不同的连通块中
+* 如何将测试边加入最小生成树中
+
+如果把每个连通块当作一个集合，那么就可以把问题转换为判断两个端点是否在同一个集合中———并查集
+
+```cpp
+int father[N];
+int findFather(int x) {
+  
+}
+
+int kruskal(int n, int m) {
+  int ans = 0, Num_Edge = 0;
+  for(int i = 1; i <= n; i++) {
+    father[i] = i;
+  }
+  sort(E, E + m, cmp);
+  for(int i = 0; i < m; i++) {
+    int faU = findFather(E[i].u);
+    int faV = findFather(E[i].v);
+    if(faU != faV) {
+      father[faU] = faV;
+      ans += E[i].cost;
+      Num_Edge++;
+      if(Num_Edge == n-1) break;
+    }
+  }
+  if(Num_Edge != n - 1) return -1;
+  else return ans;
+}
+```
+
+kruskal算法的时间复杂度主要来自对边排序。
+
+如果是稠密图，用prim算法
+
+如果是稀疏图，用kruskal算法
+
