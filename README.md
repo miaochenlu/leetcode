@@ -14,6 +14,8 @@
     * [1108. Defanging an IP Address](string/1108.md)
     * [804. Unique Morse Code Words](string/804.md)
     * [929. Unique Email Addresses](string/929.md)
+    * [1410. HTML Entity Parser](string/1410.md)
+    * [1408. String Matching in an Array](string/1408.md)
 * 数组和矩阵
    * [807.Max Increase to Keep City Skyline](arrayMatrix/807.md)
    * [ *42.Trapping Rain Water[H]](arrayMatrix/*42.md)
@@ -21,6 +23,7 @@
    * [*763. Partition Labels](arrayMatrix/*763.md)
    * [1021. Remove Outermost Parentheses](arrayMatrix/1021.md)
    * [1387. Sort Integers by The Power Value](arrayMatrix/1387.md)
+   * [1409. Queries on a Permutation With Key](arrayMatrix/1409.md)
 * 树
 
     * [*1038.Binary search Tree to Greater Sum Tree](tree/*1038.md)
@@ -43,6 +46,8 @@
 * Graph
     * [PATA1003.Emergency](graph/PATA1003.md)
     * [PATA1030.Travel Plan](graph/PATA1030.md)
+* dp
+    * [1411. Number of Ways to Paint N × 3 Grid](dp/1411.md)
 * Greedy
     * [1221. Split a String in Balanced Strings](greedy/1221.md)
 * BinarySearch
