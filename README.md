@@ -16,6 +16,7 @@
     * [929. Unique Email Addresses](string/929.md)
     * [1410. HTML Entity Parser](string/1410.md)
     * [1408. String Matching in an Array](string/1408.md)
+    * [1419. Minimum Number of Frogs Croaking](string/1419.md)
 * 数组和矩阵
    * [807.Max Increase to Keep City Skyline](arrayMatrix/807.md)
    * [ *42.Trapping Rain Water[H]](arrayMatrix/*42.md)

@@ -515,6 +515,8 @@ void Dijkstra(int s) {
 }
 ```
 
+
+
 #### 邻接表实现
 
 ```cpp
@@ -768,9 +770,11 @@ bool Bellman(int s) {		//s为源点
 }
 ```
 
+
+
 多重标尺的做法与Dijkstra算法差不多，但是统计最短路径条数的做法有点不同。
 
-Bellman-Ford算法期间会多次访问曾经访问过的顶点，如果单纯按照Dijkstra算法中介绍的num数组的写法，将会反复累计已经计算过的顶点，如果单纯按照Dijkstra算法中介绍的num数组的写法，将会反复累计已经计算过的顶点。为了解决这个问题，需要设置记录前驱的数组set<int> pre[MAXV], 当遇到一条河已有最短路径长度相同的路径时，必须重新计算最短路径条数。
+Bellman-Ford算法期间会多次访问曾经访问过的顶点，如果单纯按照Dijkstra算法中介绍的num数组的写法，将会反复累计已经计算过的顶点，如果单纯按照Dijkstra算法中介绍的num数组的写法，将会反复累计已经计算过的顶点。为了解决这个问题，需要设置记录前驱的数组set\<int> pre[MAXV], 当遇到一条和已有最短路径长度相同的路径时，必须重新计算最短路径条数。
 
 ```cpp
 void Bellman(int s) {
@@ -875,6 +879,8 @@ bool SPFA(int s) {
 
 <br>
 
+
+
 ### C. Floyd算法
 
 解决全源最短路径问题，即对给定的图G(V,E), 求任意两点u,v之间的最短路径长度，复杂度为$O(n^3)$。 由于$n^3$的复杂度决定了顶点数n的限制约在200以内，因此可以使用邻接矩阵实现
@@ -968,7 +974,7 @@ int prim() {
         MIN = d[j];
       }
     }
-    if(u == -1) return 01;
+    if(u == -1) return -1;
     vis[u] = true;
     ans += d[v];
     
@@ -1018,6 +1024,7 @@ int prim() {
       }
     }
   }
+  return ans;
 }
 ```
 
@@ -1069,7 +1076,7 @@ int kruskal(int n, int m) {
       father[faU] = faV;
       ans += E[i].cost;
       Num_Edge++;
-      if(Num_Edge == n-1) break;
+      if(Num_Edge == n - 1) break;
     }
   }
   if(Num_Edge != n - 1) return -1;
@@ -1082,4 +1089,211 @@ kruskal算法的时间复杂度主要来自对边排序。
 如果是稠密图，用prim算法
 
 如果是稀疏图，用kruskal算法
+
+# 5. 拓扑排序
+
+将有向无环图的所有顶点排成一个线性序列，使得对图G中的任意两个顶点u, v, 如果存在边u->v, 那么在序列中u一定在v前面，这个序列又被称为拓扑排序
+
+<img src="/Users/jones/Library/Application Support/typora-user-images/image-20200413124122516.png" alt="image-20200413124122516" style="zoom:50%;" />
+
+步骤
+
+1. 定义一个队列q, 把所有入度为0的节点加入队列
+2. 取队首节点，输出。然后删去所有从他出发的边，并令这些边到达的顶点的入度-1。如果某个顶点的入度减为0，则将其加入队列
+3. 反复进行2操作，直到队列为空。如果队列为空时入过队的节点数目恰好为N，成功。否则，失败，图G中有环
+
+可以使用邻接表实现。但是，由于需要记录节点的入度，因此需要额外建立一个数组inDegree[MAXV]。
+
+```cpp
+vector<int> G[MAXV];
+int n, m, inDegree[MAXV];
+
+bool topologicalSort() {
+  int num = 0;	//记录加入拓扑序列的顶点数
+  queue<int> q;
+  //先找到所有入度为0的顶点
+  for(int i = 0; i < n; i++) {
+    if(inDegree[i] == 0) {
+      q.push(i);	//将所有入度为0的点入队
+    }
+  }
+  
+  while(!q.empty()) {
+    int u = q.front(); q.pop();
+    for(int i = 0; i < G[u].size(); i++) {
+      int v = G[u][i];
+      inDegree[v]--;
+      if(inDegree[v] == 0) {
+        q.push(v);
+      }
+    }
+    G[u].clear();
+    num++;
+  }
+  if(num == n) return true;
+  else return false;
+}
+```
+
+# 6. 关键路径
+
+## 6.1 AOV网和AOE网
+
+顶点活动(Activity on vertex, AOV)网是指用顶点表示活动，用边集表示活动间优先关系的有向图。图中不应存在有向环，否则会让优先关系出现逻辑错误
+
+<img src="/Users/jones/Library/Application Support/typora-user-images/image-20200413124122516.png" alt="image-20200413124122516" style="zoom:50%;" />
+
+边活动(Activity on Edge, AOE) 网是指用带权的边集表示活动，用顶点表示事件的有向图，其中边权表示活动需要的时间。AOE网不应当有环，否则会出现和AOV网一样的逻辑问题。
+
+<img src="/Users/jones/Library/Application Support/typora-user-images/image-20200414212449813.png" alt="image-20200414212449813" style="zoom:50%;" />
+
+一般来说，AOE网用来表示一个工程的进行过程，而工程常常可以分为若干子工程。考虑到对工程来说总会有一个起始时刻和结束时刻，因此AOV网一般只有一个源点(入度为0)和一个汇点(出度为0)。即使有多个源点和汇点，也可以转换为一个源点和汇点的情况, 也就是添加超级源点和超级汇点。从超级源点出发，连接所有入度为0的点；从所有出度为0的点出发，连接超级汇点；添加的有向边的边权均为0.
+
+AOV网可以转换为AOE网。比较简单的方法是将AOV网中每个顶点都拆成两个顶点。
+
+AOE网需要着重解决两个问题
+
+* 工程起始到终止至少需要多少时间
+* 哪条(些)路径上的活动是影响整个工程进度的关键
+
+AOE网中的**最长路径**被称为**关键路径**，关键路径上的活动称为**关键活动**，关键活动会影响整个工程的进度。
+
+## 6.2 最长路径
+
+把所有边的边权✖️(-1), 令其变为相反数，然后使用Bellman-Ford算法或者SPFA算法求解最短路径长度，将所得结果取反即可。
+
+如果图中有正环存在，那么不存在最长路径。如果要求最长简单路径(每个顶点最多只经过一次的路径), 这是个NP-hard问题
+
+
+
+## 6.3 关键路径
+
+AOE网实际上是有向无环图，而关键路径是图中的最长路径，因此这里给出的方法相当于求解有向无环图(DAG)中最长路径的方法
+
+关键活动是不允许拖延的活动，这些活动的最早开始时间=最晚开始时间。
+
+设置数组`e`和`l`, 其中`e[r]`和`l[r]`分别表示活动a_r的最早开始时间和最晚开始时间。当求出这两个数组之后，就可以通过判断`e[r]==l[r]`是否成立来确定活动r是否是关键活动
+
+那么问题就是如何求解`e`和`r`
+
+<img src="/Users/jones/Library/Application Support/typora-user-images/image-20200416190125190.png" alt="image-20200416190125190" style="zoom:50%;" />
+
+注意顶点代表**事件**， 边代表**活动**
+
+如上图琐事，事件Vi经过活动a_r之后到达时间Vj。顶点有最早到达时间和最晚到达时间。因此
+
+* 事件的最早发生时间=旧活动的最早结束时间
+* 事件的最迟发生时间=新活动的最迟开始时间
+
+设置数组`ve`和`vl`, 其中`ve[i]`和`vl[i]`分别表示事件i的最早发生时间和最迟发生时间，然后就可以将求解`e[r]`和`l[r]`转换成求解这两个新的数组:
+
+(1). 对于活动a_r来说，只要在事件Vi最早发生时马上开始，就可以使得活动a_r的开始时间最早，因此e[r]=ve[i]
+
+(2). 如果l[r]是活动a_r的最迟发生时间，那么l[r]+length[r]就是事件Vj的最迟发生时间, 因此l[r]=vl[j]-length[r]
+
+只需要求出`ve`和`vl`，就可以通过上面的公式得到`e`和`l`这两个数组
+
+<br>
+
+* 求解ve
+
+<img src="/Users/jones/Library/Application Support/typora-user-images/image-20200416191028853.png" alt="image-20200416191028853" style="zoom:50%;" />
+
+拓扑排序
+
+```cpp
+stack<int> topOrder; //拓扑序列
+bool topologicalSort() {
+  queue<int> q;
+  for(int i = 0; i < n; i++) {
+    if(inDegree[i] == 0)
+      q.push(i);
+    while(q.size()) {
+      int u = q.front(); q.pop();
+      topOrder.push(u);
+      for(int i = 0; i < G[u].size(); i++) {
+        int v = G[u][i].v;
+        inDegree[v]--;
+        if(inDegree[v] == 0)
+          q.push(v);
+        //用ve[u]来更新u的所有后继节点v
+        if(ve[u] + G[u][i].w > ve[v]) 
+          ve[v] = ve[u] + G[u][i].w;
+			}
+    }
+  }
+}
+```
+
+* 求解vl
+
+<img src="/Users/jones/Library/Application Support/typora-user-images/image-20200416194638207.png" alt="image-20200416194638207" style="zoom:50%;" />
+
+逆拓扑排序
+
+这边用ve[n-1]也就是汇点来初始化vl, 因为vl[n-1]一定在关键路径上，所以,vl[n-1]=ve[n-1]
+
+```cpp
+fill(vl, vl + n, ve[n - 1]);
+
+while(!topOrder.empty()) {
+  int u = topOrder.top(); topOrder.pop();
+  for(int i = 0; i < G[u].size(); i++) {
+    int v = G[u][i].v;
+    if(vl[v] - G[u][i].w < vl[u]) {
+      vl[u] = vl[v] - G[u][i].w;
+    }
+  }
+}
+```
+
+<br>
+
+```cpp
+int CriticalPath() {
+  memset(ve, 0, sizeof(ve));
+  if(topologicalSort() == false)
+    return -1;
+  
+  fill(vl, vl + n, ve[n - 1]);
+  
+  while(topOrder.size()) {
+    int u = topOrder.top(); topOrder.pop();
+    for(int i = 0; i < G[u].size(); i++) {
+      int v = G[u][i].v;
+      if(vl[v] - G[u][i].w < vl[u]) 
+        vl[u] = vl[v] - G[u][i].w;
+    }
+  }
+  
+  for(int u = 0; u < n; u++) {
+    for(int i = 0; i < G[u].size(); i++) {
+      int v = G[u][i].v, w = G[u][i].w;
+      int e = ve[u], l = vl[v] - w;
+      if(e == l) {
+        printf("%d->%d", u, v); //输出关键路径
+      }
+    }
+  }
+  return ve[n - 1]; //输出关键路径长度
+}
+```
+
+
+
+如果事先不知道汇点编号，怎么获得关键路径长度呢? 
+
+取ve数组的最大值
+
+```cpp
+int maxLength = 0;
+for(int i = 0; i < n; i++) {
+  if(ve[i] > maxLength) {
+    maxLength = ve[i];
+  }
+}
+fill(vl, vl + n, maxLength);
+```
+
+
 
