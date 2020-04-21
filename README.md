@@ -7,6 +7,7 @@
     * [tree](tree.md)
     * [math Problem](mathProblemNote.md)
     * [Graph](graph.md)
+    * [dp](dp.md)
 * 方法
     * [map](map.md)
     * [单调栈](method/monotoneStack.md)
