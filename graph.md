@@ -98,7 +98,7 @@ DFS的具体实现：
 
 在有向图中，如果两个顶点可以各自通过一条有向路径到达另一个顶点，就称这两个顶点强连通。如果图G(V,E)的任意两个顶点都强连通，则称图G为强连通图；否则， 称图G为非强连通图，且称其中的极大强连通子图为强连通分量。
 
-<img src="/Users/jones/Library/Application Support/typora-user-images/image-20200401145227860.png" alt="image-20200401145227860" style="zoom:50%;" />
+<img src="img/image-20200401145227860-7458330.png" alt="image-20200401145227860" style="zoom:50%;" />
 
 如果想要遍历整个图，就需要对所有连通快分别进行遍历。所以DFS遍历图的基本思路就是将经过的顶点设置为已访问，在下次递归碰到这个顶点时就不再去处理，直到整个图的顶点都被标记为已访问。
 
@@ -694,7 +694,7 @@ Bellman-Ford问题可以解决单源最短路径问题，也能处理有负权�
 
 考虑graph中的环。根据环中边的边权之和的正负，可以将环分为零环，正环，负环。
 
-<img src="/Users/jones/Library/Application Support/typora-user-images/image-20200407151038570.png" alt="image-20200407151038570" style="zoom:50%;" />
+<img src="img/image-20200407151038570.png" alt="image-20200407151038570" style="zoom:50%;" />
 
 正环和零环不会影响最短路径的求解。如果存在负环，那么将在负环无限循环；但是如果负环无法从源点出发到达，那么最短路径的求解也不会受到影响。
 
@@ -1094,7 +1094,7 @@ kruskal算法的时间复杂度主要来自对边排序。
 
 将有向无环图的所有顶点排成一个线性序列，使得对图G中的任意两个顶点u, v, 如果存在边u->v, 那么在序列中u一定在v前面，这个序列又被称为拓扑排序
 
-<img src="/Users/jones/Library/Application Support/typora-user-images/image-20200413124122516.png" alt="image-20200413124122516" style="zoom:50%;" />
+<img src="img/image-20200413124122516-7458305.png" alt="image-20200413124122516" style="zoom:50%;" />
 
 步骤
 
@@ -1141,11 +1141,11 @@ bool topologicalSort() {
 
 顶点活动(Activity on vertex, AOV)网是指用顶点表示活动，用边集表示活动间优先关系的有向图。图中不应存在有向环，否则会让优先关系出现逻辑错误
 
-<img src="/Users/jones/Library/Application Support/typora-user-images/image-20200413124122516.png" alt="image-20200413124122516" style="zoom:50%;" />
+<img src="img/image-20200413124122516.png" alt="image-20200413124122516" style="zoom:50%;" />
 
 边活动(Activity on Edge, AOE) 网是指用带权的边集表示活动，用顶点表示事件的有向图，其中边权表示活动需要的时间。AOE网不应当有环，否则会出现和AOV网一样的逻辑问题。
 
-<img src="/Users/jones/Library/Application Support/typora-user-images/image-20200414212449813.png" alt="image-20200414212449813" style="zoom:50%;" />
+<img src="img/image-20200414212449813.png" alt="image-20200414212449813" style="zoom:50%;" />
 
 一般来说，AOE网用来表示一个工程的进行过程，而工程常常可以分为若干子工程。考虑到对工程来说总会有一个起始时刻和结束时刻，因此AOV网一般只有一个源点(入度为0)和一个汇点(出度为0)。即使有多个源点和汇点，也可以转换为一个源点和汇点的情况, 也就是添加超级源点和超级汇点。从超级源点出发，连接所有入度为0的点；从所有出度为0的点出发，连接超级汇点；添加的有向边的边权均为0.
 
@@ -1176,7 +1176,7 @@ AOE网实际上是有向无环图，而关键路径是图中的最长路径，�
 
 那么问题就是如何求解`e`和`r`
 
-<img src="/Users/jones/Library/Application Support/typora-user-images/image-20200416190125190.png" alt="image-20200416190125190" style="zoom:50%;" />
+<img src="img/image-20200416190125190.png" alt="image-20200416190125190" style="zoom:50%;" />
 
 注意顶点代表**事件**， 边代表**活动**
 
@@ -1197,7 +1197,7 @@ AOE网实际上是有向无环图，而关键路径是图中的最长路径，�
 
 * 求解ve
 
-<img src="/Users/jones/Library/Application Support/typora-user-images/image-20200416191028853.png" alt="image-20200416191028853" style="zoom:50%;" />
+<img src="img/image-20200416191028853.png" alt="image-20200416191028853" style="zoom:50%;" />
 
 拓扑排序
 
@@ -1227,7 +1227,7 @@ bool topologicalSort() {
 
 * 求解vl
 
-<img src="/Users/jones/Library/Application Support/typora-user-images/image-20200416194638207.png" alt="image-20200416194638207" style="zoom:50%;" />
+<img src="img/image-20200416194638207.png" alt="image-20200416194638207" style="zoom:50%;" />
 
 逆拓扑排序
 
