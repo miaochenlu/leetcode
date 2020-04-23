@@ -207,3 +207,108 @@ int main() {
 
 对于dp, 必须设计拥有无后效性的状态和状态转移方程。
 
+
+
+# 3. 最长不下降子序列(LIS)
+
+在一个数字序列中，找到一个最长的子序列(可以不连续)，使得这个子序列是不下降(非递减)的。
+
+例如: A={1,2,3,-1,-2,7,9}, 那么他的最长不下降子序列为{1,2,3,7,9}, 长度为5.
+
+思路1:枚举。对于每个元素都有取和不取两种情况，然后判断序列是否为不下降序列。但是复杂度为$O(2^n)$
+
+但是上述思路包含了大量的重复计算。
+
+令dp[i]表示以A[i]结尾的最长不下降子序列长度，A[i]有两种可能性
+
+* 如果存在A[i]之前的元素A[j] (j<i), 使得A[j]<=A[i]并且dp[j]+1>dp[i]。那么就把A[i]跟在以A[j]结尾的LIS后面，形成一条更长的不下降子序列(令dp[i]=dp[j]+1)
+* 如果A[i]之前的元素都比A[i]大，则LIS只有A[i], 长度为1
+
+写出状态转移方程
+
+dp[i]=max{1, dp[j]+1} (j=1,2,..., i-1 && A[j] < A[i])
+
+```cpp
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+const int N = 100;
+int A[N], dp[N];
+
+int main() {
+  int n;
+  scanf("%d", &n);
+  for(int i = 1; i <= n; i++) 
+    scanf("%d", &A[i]);
+  
+  int ans = -1;
+  for(int i = 1; i <= n; i++) {
+    dp[i] = 1;
+    for(int j = 1; j < i; j++) {
+      if(A[j] <= A[i] && dp[j] + 1 > dp[i]) {
+        dp[i] = dp[j] + 1;
+      }
+    }
+    ans = max(ans, dp[i]);
+  }
+  printf("%d\n", ans);
+}
+```
+
+# 4. 最长公共子序列
+
+给定两个字符串(或数字序列)A和B，求一个字符串，使得这个字符串是A和B的最长公共部分(子序列可以不连续)
+
+<img src="img/image-20200423201028725.png" alt="image-20200423201028725" style="zoom:50%;" />
+
+暴力：设字符串A和B的长度分别是n, m, 那么对两个字符串中的每个字符，分别有选和不选两个决策。得到两个子序列后，比较两个子序列是否相同需要O(max(m,n)), 这样总复杂度为$O(2^{m+n}max(m,n))$
+
+dp的做法
+
+令dp\[i][j]表示字符串A的i号位和字符串B的j号位之前的LCS长度。那么可以根据A[i]和B[j]的情况，作出两种决策
+
+* A[i]==B[j], 则dp\[i][j]=dp\[i-1][j-1]+1
+* A[i]!=B[j], 则dp\[i][j]=max(dp\[i-1][j], dp\[i][j-1])
+
+边界位dp\[i][0]=dp\[0][j]=0
+
+```cpp
+#include<cstdio>
+#include<cstring>
+#include<algorithm>
+using namespace std;
+const int N = 100;
+char A[N], B[N];
+int dp[N][N];
+
+int main() {
+  int n;
+  gets(A + 1);
+  gets(B + 1);
+  int lenA = strlen(A + 1);
+  int lenB = strlen(B + 1);
+  
+  //边界
+  for(int i = 0; i <= lenA; i++)
+    dp[i][0] = 0;
+  for(int j = 0; j <= lenB; j++) 
+    dp[0][j] = 0;
+  
+  for(int i = 1; i <= lenA; i++) {
+    for(int j = 1; j <= lenB; j++) {
+      if(A[i] == B[j])
+        dp[i][j] = dp[i - 1][j - 1] + 1;
+      else 
+        dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+    }
+	}
+  printf("%d\n", dp[lenA][lenB]);
+}
+```
+
+
+
+
+
+
+
