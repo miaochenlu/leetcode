@@ -308,6 +308,135 @@ int main() {
 
 
 
+# 5. 最长回文子串
+
+给出一个字符串S, 求S的最长回文子串的长度
+
+样例："PATZJUJZTACCBCC"的最长回文子串为"ATZJUJZTA"
+
+暴力解法: 枚举子串的两个端点i, j, 判断在[i, j]区间内的子串是否回文。枚举端点需要$O(n^2)$, 判断回文需要$O(n)$, 因此总复杂度为$O(n^3)$
+
+dp:
+
+dp\[i][j]表示S[i]到S[j]所表示的子串是否为回文子串，是为1，不是为0.根据S[i]是否等于S[j], 分为以下两种情况
+
+* S[i]==S[j], 那么只要S[i+1]至S[j-1]是回文串，S[i]到S[j]就是回文串; 如果S[i+1]到S[j-1]不是回文串，则S[i]到S[j]也不是回文串
+* 若S[i]!=S[j], 那么S[i]到S[j]一定不是回文串
+
+$$dp[i][j]=\begin{aligned}dp[i+1][j-1], &S[i]==S[j]\\ 0, &S[i]!=S[j]\end{aligned}$$
+
+边界:dp\[i][i]=1, dp\[i][i+1]=(S[i]==S[i+1])?1:0 
+
+这种方式存在一个问题
+
+> 如果按照i, j从小到大的顺序来枚举子串的两个端点，然后更新dp\[i][j], 无法保证dp\[i+1][j-1]已经计算过，从而无法得到正确的dp\[i][j]
+
+考虑到我们边界是长度为1和2的子串，我们考虑按照子串的长度和子串的初始位置进行枚举，第一遍将长度为3的子串的dp全部求出，第二遍将长度为4的子串的dp全部求出
+
+```cpp
+#include<cstdio>
+#include<cstring>
+const int maxn = 1010;
+char S[maxn];
+int dp[maxn][maxn];
+
+int main() {
+  get(S);
+  int len = strlen(S), ans = 1;
+  memset(dp, 0, sizeof(dp));
+  //边界
+  for(int i = 0; i < len; i++) {
+    dp[i][i] = 1;
+    if(i < len - 1) {
+      if(S[i] == S[i + 1]) {
+        dp[i][i + 1] = 1;
+        ans = 2;
+      }
+    }
+  }
+  //状态转移方程
+  for(int L = 3; L < len; L++) {
+    for(int i = 0; i + L - 1 < len; i++) {
+      if(S[i] == S[j] && dp[i + 1][j - 1] == 1) {
+        dp[i][j] = 1;
+        ans = L;
+      }
+    }
+  }
+  printf("%d\n", ans);
+}
+```
+
+
+
+# 6. DAG最长路
+
+这里注重解决两个问题
+
+* 求整个DAG中的最长路径(不固定起点和终点)
+* 固定终点，求DAG的最长路径
+
+令dp[i]表示从i号顶点出发能获得的最长路径长度
+
+如果从顶点i出发能够直接到大顶点$j_1,j_2,\cdots,j_k$, 而$dp[j_1],dp[j_2],\cdots,dp[j_k]$均已知，那么就有dp[i]=max{dp[j]+length[i->j]}
+
+<img src="../../miaochenlu.github.io/assets/images/image-20200424150300887.png" alt="image-20200424150300887" style="zoom:50%;" />
+
+根据上述思路，需要按照逆拓扑序列的顺序来求解dp数组。
+
+如果不求逆拓扑排序怎么求解dp数组， 递归
+
+```cpp
+int DP(int i) {
+  if(dp[i] > 0) return dp[i];
+  for(int j = 0; j < n; j++) {
+    if(G[i][j] != INF) 
+      dp[i] = max(dp[i], DP(j) + G[i][j])
+  }
+  return dp[i];
+}
+```
+
+边界：
+
+由于从出度为0的顶点出发的最长路径长度为0，因此边界为这些顶点的dp值为0。具体实现中将dp数组全部初始化为0
+
+<br>
+
+如何知道最长路径具体时那一条呢？
+
+```cpp
+int DP(int i) {
+  if(dp[i] > 0) return dp[i];
+  for(int j = 0; j < n; j++) {
+    if(G[i][j] != INF) {
+      int temp = DP(j) + G[i][j];
+      if(temp > dp[i]) {
+        dp[i] = temp;
+        choice[i] = j;
+      }
+    }
+  }
+  return dp[i];
+}
+
+void printPath(int i) {
+  printf("%d", i);
+  while(choice[i] != -1) {
+    i = choice[i];
+    printf("->%d", i);
+  }
+}
+```
+
+
+
+
+
+
+
+
+
 
 
 
