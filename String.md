@@ -16,7 +16,7 @@ $$H[i]=(H[i-1]\times 26+index(str[i])) \%mod$$
 
 但是这样可能会有多个字符串对hash值相同，导致冲突。
 
-幸运的是，在实践中发现，在int数据范围内，如果把紧致数设置为一个$10^7$级别的素数p(例如10000019), 同时把mod设置为一个$10^9$级别的素数(例如1000000007), 那么冲突的概率将会变得非常小，很难产生冲突
+幸运的是，在实践中发现，在int数据范围内，如果把进制数设置为一个$10^7$级别的素数p(例如10000019), 同时把mod设置为一个$10^9$级别的素数(例如1000000007), 那么冲突的概率将会变得非常小，很难产生冲突
 
 $$H[i]=(H[i-1])\times p+index(str[i]))\% mod$$
 
@@ -85,6 +85,10 @@ $$H[i...j]=((H[j]-H[i-1]\times p^{j-i+1})\%mod+mod)\%mod$$
 
 
 
+<br>
+
+**这里还有点问题**
+
 接下来来看一个问题：输入两个长度均不超过1000的字符串，求他们的最长公共子串的长度。
 
 例如字符串"ILoveYou"与"YouDontLoveMe"的最长公共子串为"Love", 因此输出4
@@ -139,7 +143,7 @@ int getMax() {
     int ans = 0;
     for(int i = 0; i < pr1.size(); i++) {
         for(int j = 0; j < pr2.size(); j++) {
-            if(pr[i].first == pr2.first) {
+            if(pr[i].first == pr2[j].first) {
                 ans = max(ans, pr1[i].second)
             }
         }
@@ -235,4 +239,117 @@ int main() {
     printf("%d\n", ans);
 }
 ```
+
+
+
+### KMP算法
+
+**next数组**
+
+假设有一个字符串`s` (下标从0开始)， 那么他以i号位作为结尾的子串就是`s[0,...,i]`。
+
+对于这个子串来说，长度为k+1的前缀和后缀分别是`s[0,...,k]`, `s[i-k,...,i]`。
+
+定义int型数组next, 其中`next[i]`表示使子串`s[0,...,i]`的前缀`s[0,...,k]`等于后缀`s[i-k,...,i]`的最大的k (前缀后缀可以部分重叠，但是不能是`s[0,...,i]`本身)。如果找不到相等的前后缀，就令`next[i] = -1`
+
+`next[i]`就是子串`s[0,...,i]`的最长相等前后缀的前缀最后一位的下标。
+
+
+
+递推法求解next数组
+
+```cpp
+void getNext(char s[], int len) {
+    int j = -1;
+    next[0] = -1;
+    
+    for(int i = 1; i < len; i++) {
+        while(j != -1 && s[i] != s[j + 1]) {
+            j = next[j];
+        }
+        if(s[i] == s[j + 1]) {
+            j++;
+        }
+        next[i] = j;
+    }
+}
+```
+
+
+
+**KMP算法**
+
+```cpp
+bool KMP(char text[], char pattern[]) {
+    int n = strlen(text), m = strlen(pattern); //字符串长度
+    getNext(pattern, m); //计算pattern的next数组
+    int j = -1;
+    for(int i = 0; i < n; i++) {
+        while(j != -1 && text[i] != pattern[j + 1]) {
+            j = next[j];
+        }
+        if(text[i] == pattern[j + 1]) {
+            j++;
+        }
+        if(j == m - 1) {
+            return true;
+        }
+    }
+    return false;
+}
+```
+
+
+
+统计 pattern出现次数的KMP算法如下
+
+```cpp
+int KMP(char text[], char pattern[]) {
+    int n = strlen(text), m = strlen(pattern);
+    getNext(pattern, m);
+    int ans = 0; //表示成功匹配次数
+    int j = -1;
+    
+    for(int i = 0; i < n; i++) {
+        while(j != -1 && text[i] != pattern[j + 1]) {
+            j = next[j];
+        }
+        if(text[i] == pattern[j + 1]) {
+            j++;
+        }
+        if(j == m - 1) {
+            ans++;			//成功匹配次数+1
+            j = next[j];	//让j回退到next[j]继续匹配
+        }
+    }
+    return ans;	//返回成功匹配次数
+}
+```
+
+
+
+这块还不是很懂。
+
+```cpp
+void getNextval(char s[], int len) {
+    int j = -1;
+    nextval[0] = -1;
+    
+    for(int i = 1; i < len; i++) {
+        while(j != -1 && s[i] != s[j + 1]) {
+            j = nextval[j];
+        }
+        if(s[i] == s[j + 1]) {
+            j++;
+        }
+        if(j == -1 || s[i + 1] != s[j + 1]) {
+            nextval[i] = j;
+        } else {
+            nextval[i] = nextval[j];
+        }
+    }
+}
+```
+
+
 
