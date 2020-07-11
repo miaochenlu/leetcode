@@ -1,6 +1,90 @@
 # 字符串专题
 
-# 1.  字符串hash进阶
+# 1. 字符串读取
+
+#### 1. scanf()
+
+```cpp
+char s[20];
+scanf("%s", s);
+printf("%s\n", s);
+```
+
+#### 2. getchar()
+
+```cpp
+#include<cstdio>
+
+int main() {
+    char c;
+    while(( c = getchar())  != '\n') {
+        printf("%c", c);
+    }
+}
+```
+
+#### 3. getline()
+
+```
+官方说明：
+（1）    
+istream＆getline（istream＆is，string＆str，char delim）;
+istream＆getline（istream && is，string＆str，char delim）;
+（2）    
+istream＆getline（istream＆is，string＆str）;
+istream＆getline（istream && is，string＆str）;
+```
+
+从流中获取行字符串
+从is中提取字符并将它们存储到str中，直到找到分隔字符delim（或换行符，（2）中默认为'\ n'）。
+
+is：
+
+istream object from which characters are extracted.
+
+str：
+
+string object where the extracted line is stored.The contents in the string before the call (if any) are discarded and replaced by the extracted line.
+
+例如：
+
+第一行输入一个n，代表接下来输入n行字符串（每行字符串可以包含空格）
+
+```
+3
+aa aa
+bbb
+ccc
+```
+
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main()
+{
+    vector<string> vec;
+    int n;
+    cin >> n;
+    cin.get();//由于输入n之后回车，使用这句回车符号吃掉，否则下面的getline()获取的第一个字符串为'\n'
+
+    while(n--) {
+        string s;
+        getline(cin, s); //默认为回车符，若以其他符号为分隔符，改为getline(cin, s, ',')，例如逗号
+        vec.push_back(s);       
+    }
+    cout<< "result: " <<endl;
+    for(int i=0; i<vec.size(); ++i) {
+        cout << vec.at(i) << endl;
+    }
+    return 0;
+}
+```
+
+
+
+# 2.  字符串hash进阶
 
 字符串hash将一个字符串S映射为一个整数，使得该整数可以尽可能唯一地代表字符串S.
 
