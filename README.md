@@ -1,15 +1,15 @@
 # Summary
 
 * Note
-    * [算法初步](algorithmStartNote.md)
-    * [stl](stl.md)
-    * [search](search.md)
-    * [tree](tree.md)
-    * [math Problem](mathProblemNote.md)
-    * [Graph](graph.md)
-    * [dp](dp.md)
+    * [算法初步](algorithmNotes/algorithmStartNote.md)
+    * [stl](algorithmNotes/stl.md)
+    * [search](algorithmNotes/search.md)
+    * [tree](algorithmNotes/tree.md)
+    * [math Problem](algorithmNotes/mathProblemNote.md)
+    * [Graph](algorithmNotes/graph.md)
+    * [dp](algorithmNotes/dp.md)
 * 方法
-    * [map](map.md)
+    * [map](algorithmNotes/map.md)
     * [单调栈](method/monotoneStack.md)
 * 字符串
     * [1108. Defanging an IP Address](string/1108.md)
@@ -18,6 +18,8 @@
     * [1410. HTML Entity Parser](string/1410.md)
     * [1408. String Matching in an Array](string/1408.md)
     * [1419. Minimum Number of Frogs Croaking](string/1419.md)
+    * [32. Longest Valid Parentheses](string/32_LongestValidParen.md)
+    * [1209. Remove All Adjacent Duplicates in String II](string/1209_RemoveAdjacentDuplicates.md)
 * 数组和矩阵
    * [807.Max Increase to Keep City Skyline](arrayMatrix/807.md)
    * [ *42.Trapping Rain Water[H]](arrayMatrix/*42.md)
@@ -26,9 +28,12 @@
    * [1021. Remove Outermost Parentheses](arrayMatrix/1021.md)
    * [1387. Sort Integers by The Power Value](arrayMatrix/1387.md)
    * [1409. Queries on a Permutation With Key](arrayMatrix/1409.md)
-* 树
+* 链表
 
-    * [*1038.Binary search Tree to Greater Sum Tree](tree/*1038.md)
+    * [19. Remove Nth Node From End of List](LinkedList/19_RmNthNode.md)
+
+* 树
+* [*1038.Binary search Tree to Greater Sum Tree](tree/*1038.md)
     * [654. Maximum Binary Tree](tree/*654.md)
     * [701. Insert into a Binary Search Tree](tree/701.md)
     * [938.Range Sum of BST](tree/938.md)
@@ -50,12 +55,13 @@
     * [PATA1030.Travel Plan](graph/PATA1030.md)
 * dp
     * [1411. Number of Ways to Paint N × 3 Grid](dp/1411.md)
+    * [474. Ones and Zeroes](dp/474ones_and_zeroes.md)
 * Greedy
     * [1221. Split a String in Balanced Strings](greedy/1221.md)
-* BinarySearch
+* Binary Search
     * [852. Peak Index in a Mountain Array](BinarySearch/852.md)
     * [744. Find Smallest Letter Greater Than Target](BinarySearch/744.md)
-* Twopointers
+* Two Pointers
     * [344. Reverse String](Twopointers/344.md)
     * [986. Interval List Intersections](Twopointers/986.md)
     * [349. Intersection of Two Arrays](Twopointers/349.md)
@@ -66,4 +72,6 @@
     * [684. Redundant Connection](UnionFind/684.md)
 * 打表
     * [12.Integer to Roman](打表/12.md)
+
+* [回文](palindrome.md)
 
