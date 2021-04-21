@@ -56,6 +56,7 @@
 * dp
     * [1411. Number of Ways to Paint N × 3 Grid](dp/1411.md)
     * [474. Ones and Zeroes](dp/474ones_and_zeroes.md)
+    * [120. Triangle](dp/120_Triangle.md)
 * Greedy
     * [1221. Split a String in Balanced Strings](greedy/1221.md)
 * Binary Search
