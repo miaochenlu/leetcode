@@ -166,7 +166,7 @@ public:
 
 双指针
 
-<img src="C:\Users\Dell 7080\Desktop\all\leetcode\img\image-20210422125658704.png" alt="image-20210422125658704" style="zoom: 50%;" />
+<img src="../img/image-20210422125658704.png" alt="image-20210422125658704" style="zoom: 50%;" />
 
 ```cpp
 class Solution {
