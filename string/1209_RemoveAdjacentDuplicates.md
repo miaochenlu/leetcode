@@ -166,6 +166,8 @@ public:
 
 双指针
 
+<img src="C:\Users\Dell 7080\Desktop\all\leetcode\img\image-20210422125658704.png" alt="image-20210422125658704" style="zoom: 50%;" />
+
 ```cpp
 class Solution {
 public:
@@ -175,14 +177,14 @@ public:
         
         for(int j = 0; j < n; ++j, ++i) {
             s[i] = s[j];
-            if(i > 0 && s[i - 1] != s[j])
+            if(i > 0 && s[i - 1] == s[i])
                 count[i] = count[i - 1] + 1;
             else
                 count[i] = 1;
             if(count[i] == k) i -= k;
         }
-        return r.substr(0, i);
-    }
+        return s.substr(0, i);
+    } 
 };
 ```
 
