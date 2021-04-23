@@ -1,6 +1,6 @@
 # Summary
 
-* Note
+* Notes
     * [算法初步](algorithmNotes/algorithmStartNote.md)
     * [stl](algorithmNotes/stl.md)
     * [search](algorithmNotes/search.md)
@@ -31,7 +31,9 @@
 * 链表
 
     * [19. Remove Nth Node From End of List](LinkedList/19_RmNthNode.md)
+* 哈希表
 
+    * [554. Brick Wall](HashTable/554_BrickWall)
 * 树
     * [*1038.Binary search Tree to Greater Sum Tree](tree/*1038.md)
     * [654. Maximum Binary Tree](tree/*654.md)
@@ -73,6 +75,5 @@
     * [684. Redundant Connection](UnionFind/684.md)
 * 打表
     * [12.Integer to Roman](打表/12.md)
-
 * [回文](palindrome.md)
 
