@@ -1,6 +1,6 @@
 # Summary
 
-* Notes
+* Note
     * [算法初步](algorithmNotes/algorithmStartNote.md)
     * [stl](algorithmNotes/stl.md)
     * [search](algorithmNotes/search.md)
@@ -23,8 +23,8 @@
 * 数组和矩阵
    * [807.Max Increase to Keep City Skyline](arrayMatrix/807.md)
    * [ *42.Trapping Rain Water[H]](arrayMatrix/*42.md)
-   * [* 50. Reveal Cards In Increasing Order](arrayMatrix/*50.md)
-   * [*763. Partition Labels](arrayMatrix/*763.md)
+   * [* 50. Reveal Cards In Increasing Order](arrayMatrix/50.md)
+   * [*763. Partition Labels](arrayMatrix/763.md)
    * [1021. Remove Outermost Parentheses](arrayMatrix/1021.md)
    * [1387. Sort Integers by The Power Value](arrayMatrix/1387.md)
    * [1409. Queries on a Permutation With Key](arrayMatrix/1409.md)
@@ -33,10 +33,10 @@
     * [19. Remove Nth Node From End of List](LinkedList/19_RmNthNode.md)
 * 哈希表
 
-    * [554. Brick Wall](HashTable/554_BrickWall)
+    * [554. Brick Wall](HashTable/554_BrickWall.md)
 * 树
-    * [*1038.Binary search Tree to Greater Sum Tree](tree/*1038.md)
-    * [654. Maximum Binary Tree](tree/*654.md)
+    * [*1038.Binary search Tree to Greater Sum Tree](tree/1038.md)
+    * [654. Maximum Binary Tree](tree/654.md)
     * [701. Insert into a Binary Search Tree](tree/701.md)
     * [938.Range Sum of BST](tree/938.md)
     * [814. Binary Tree Pruning](tree/814.md)
@@ -46,7 +46,7 @@
     * [1325. Delete Leaves With a Given Value](tree/1325.md)
     * [1161. Maximum Level Sum of a Binary Tree](tree/1161.md)
 * DFS&BFS
-    * [*1079. Letter Tile Possibilities](DFS_BFS/*1079.md)
+    * [*1079. Letter Tile Possibilities](DFS_BFS/1079.md)
     * [897. Increasing Order Search Tree](DFS_BFS/897.md)
     * [1302. Deepest Leaves Sum](DFS_BFS/1302.md)
     * [1315. Sum of Nodes with Even-Valued Grandparent](DFS_BFS/1315.md)
@@ -68,7 +68,7 @@
     * [344. Reverse String](Twopointers/344.md)
     * [986. Interval List Intersections](Twopointers/986.md)
     * [349. Intersection of Two Arrays](Twopointers/349.md)
-    * [*1004. Max Consecutive Ones III](Twopointers/*1004.md)
+    * [*1004. Max Consecutive Ones III](Twopointers/1004.md)
 * Union Find
     * [*959. Regions Cut By Slashes](UnionFind/*959.md)
     * [547. Friend Circles](UnionFind/547.md)
