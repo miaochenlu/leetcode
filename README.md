@@ -20,6 +20,7 @@
     * [1419. Minimum Number of Frogs Croaking](string/1419.md)
     * [32. Longest Valid Parentheses](string/32_LongestValidParen.md)
     * [1209. Remove All Adjacent Duplicates in String II](string/1209_RemoveAdjacentDuplicates.md)
+    * [696. Count Binary Substrings](string/696_CountBinarySubstrings.md)
 * 数组和矩阵
    * [807.Max Increase to Keep City Skyline](arrayMatrix/807.md)
    * [ *42.Trapping Rain Water[H]](arrayMatrix/*42.md)
