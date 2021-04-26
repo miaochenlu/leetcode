@@ -29,6 +29,7 @@
    * [1021. Remove Outermost Parentheses](arrayMatrix/1021.md)
    * [1387. Sort Integers by The Power Value](arrayMatrix/1387.md)
    * [1409. Queries on a Permutation With Key](arrayMatrix/1409.md)
+   * [48. Rotate Image](arrayMatrix/48_RotateImage.md)
 * 链表
 
     * [19. Remove Nth Node From End of List](LinkedList/19_RmNthNode.md)
