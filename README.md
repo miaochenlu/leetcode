@@ -47,6 +47,8 @@
     * [894. All Possible Full Binary Trees](tree/894.md)
     * [1325. Delete Leaves With a Given Value](tree/1325.md)
     * [1161. Maximum Level Sum of a Binary Tree](tree/1161.md)
+* Heap
+    * [1642. Furthest Building You Can Reach](Heap/1642_FurthestBuildingYouCanReach.md)
 * DFS&BFS
     * [*1079. Letter Tile Possibilities](DFS_BFS/1079.md)
     * [897. Increasing Order Search Tree](DFS_BFS/897.md)
